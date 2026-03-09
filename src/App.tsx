@@ -289,37 +289,25 @@ const Hero = () => {
           transition={{ duration: 1, delay: 0.2 }}
           className="relative hidden lg:block"
         >
-          <div className="relative z-10 bg-gradient-to-br from-slate-800 to-slate-900 p-4 rounded-[2rem] border border-white/10 shadow-3xl">
-            <img 
-              src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=800" 
-              alt="Robotics" 
-              className="rounded-[1.5rem] w-full h-auto object-cover"
-              referrerPolicy="no-referrer"
+          <div className="relative z-10 flex items-center justify-center">
+            <motion.img 
+              src={`${BASE}mascot.jpg`}
+              alt="Makerverse Mascot" 
+              className="w-[400px] h-auto drop-shadow-[0_20px_60px_rgba(255,99,33,0.3)]"
+              animate={{ y: [0, -20, 0] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             />
-            {/* Floating UI Elements */}
+            {/* Floating UI Element */}
             <div className="absolute -top-6 -right-6 bg-white p-4 rounded-2xl shadow-xl flex items-center gap-3 animate-bounce">
               <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center text-orange-600">
                 <Trophy size={20} />
               </div>
               <div>
-                <p className="text-xs text-slate-500 font-medium">Grand Prize</p>
-                <p className="text-sm font-bold text-slate-900">3D Printed Trophy</p>
-              </div>
-            </div>
-            
-            <div className="absolute -bottom-6 -left-6 bg-slate-900 p-4 rounded-2xl border border-white/10 shadow-xl flex items-center gap-3">
-              <div className="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center text-blue-400">
-                <Cpu size={20} />
-              </div>
-              <div>
-                <p className="text-xs text-slate-500 font-medium">Tech Stack</p>
-                <p className="text-sm font-bold text-white">Makerverse Ecosystem</p>
+                <p className="text-xs text-slate-500 font-medium">Prizes</p>
+                <p className="text-sm font-bold text-slate-900">Exciting rewards await! 🏆</p>
               </div>
             </div>
           </div>
-          {/* Decorative Rings */}
-          <div className="absolute inset-0 border-2 border-orange-500/20 rounded-[2rem] scale-105 -rotate-3 -z-10" />
-          <div className="absolute inset-0 border-2 border-blue-500/20 rounded-[2rem] scale-110 rotate-3 -z-20" />
         </motion.div>
       </div>
     </section>
