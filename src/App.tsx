@@ -258,7 +258,7 @@ const Hero = () => {
         >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-xs font-bold uppercase tracking-widest mb-6">
             <Zap size={14} />
-            The Countryside Movement
+            Learn, Create, Innovate
           </div>
           <h1 className="text-5xl md:text-7xl font-black text-white leading-tight mb-6">
             1st Dipolog <br />
@@ -427,6 +427,16 @@ const About = () => {
                 </div>
               </div>
             </div>
+
+            <a 
+              href="https://www.facebook.com/makerverse.ph" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="mt-8 inline-flex items-center gap-3 bg-[#1877F2] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#1864D9] transition-all shadow-lg shadow-blue-500/20"
+            >
+              <Facebook size={20} fill="currentColor" />
+              Follow us on Facebook
+            </a>
           </div>
 
           <div className="relative">
@@ -467,10 +477,9 @@ const Vision = () => {
             "Our vision at Makerverse is not just to teach. It’s to build a movement. A movement that empowers the countryside, that creates confident makers out of curious kids. We believe learning tech shouldn’t be a luxury. It should be a right."
           </blockquote>
           <div className="flex flex-col items-center">
-            <p className="text-xl font-bold text-white mb-1">Loyd Ocampo</p>
-            <p className="text-sm text-orange-400 font-bold uppercase tracking-widest">Founder, Makerverse</p>
+            <p className="text-xl font-bold text-white mb-1">Makerverse</p>
             <p className="text-xs text-slate-500 mt-4 max-w-md">
-              Excerpt of a speech delivered at 2025 Summer Robot Games International Open & Youth Robotics Convention, Philippines
+              Excerpt from a speech at the 2025 Summer Robot Games International Open & Youth Robotics Convention, Philippines
             </p>
           </div>
         </motion.div>
@@ -706,7 +715,10 @@ const Footer = () => {
               Building a movement that empowers the countryside and creates confident makers out of curious kids.
             </p>
             <div className="flex gap-4">
-              {['facebook', 'twitter', 'instagram', 'youtube'].map((social) => (
+              <a href="https://www.facebook.com/makerverse.ph" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-[#FF6321] transition-all border border-white/10">
+                <Facebook size={18} fill="currentColor" />
+              </a>
+              {['twitter', 'instagram', 'youtube'].map((social) => (
                 <a key={social} href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-[#FF6321] transition-all border border-white/10">
                   <span className="sr-only">{social}</span>
                   <div className="w-5 h-5 bg-white/20 rounded-sm" />
