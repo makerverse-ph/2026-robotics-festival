@@ -75,59 +75,10 @@ const GAME_CLUSTERS: GameCluster[] = [
 
 // --- Components ---
 
+const BASE = import.meta.env.BASE_URL;
+
 const MakerverseLogo = ({ className = "w-10 h-10" }: { className?: string }) => (
-  <svg viewBox="0 0 400 400" className={className} xmlns="http://www.w3.org/2000/svg">
-    {/* Background Circle */}
-    <circle cx="200" cy="210" r="140" fill="#90cce6" />
-    
-    {/* Curved Text Path */}
-    <path id="text-curve" d="M 60 200 A 140 140 0 0 1 340 200" fill="transparent" />
-    
-    {/* MAKERVERSE Text */}
-    <text fill="white" fontFamily="sans-serif" fontWeight="900" fontSize="42" letterSpacing="6">
-      <textPath href="#text-curve" startOffset="50%" textAnchor="middle">
-        MAKERVERSE
-      </textPath>
-    </text>
-
-    {/* Robot Shoulders */}
-    <path d="M 120 280 C 120 250, 280 250, 280 280" fill="#1a2238" />
-
-    {/* Earpieces */}
-    <rect x="105" y="150" width="30" height="90" rx="15" fill="#f48225" stroke="#1a2238" strokeWidth="6" />
-    <rect x="265" y="150" width="30" height="90" rx="15" fill="#f48225" stroke="#1a2238" strokeWidth="6" />
-    <rect x="95" y="165" width="20" height="60" rx="10" fill="#1a2238" />
-    <rect x="285" y="165" width="20" height="60" rx="10" fill="#1a2238" />
-
-    {/* Robot Helmet */}
-    <path d="M 125 230 C 110 120, 290 120, 275 230 C 270 260, 130 260, 125 230 Z" fill="#f48225" stroke="#1a2238" strokeWidth="6" />
-    
-    {/* Visor Outer */}
-    <path d="M 135 175 C 135 155, 265 155, 265 175 L 260 225 C 260 245, 140 245, 140 225 Z" fill="#1b3b68" stroke="#1a2238" strokeWidth="6" />
-    
-    {/* Visor Inner Glow */}
-    <path d="M 145 180 C 145 165, 255 165, 255 180 L 250 220 C 250 235, 150 235, 150 220 Z" fill="#2a5a8c" />
-
-    {/* Eyes */}
-    <circle cx="175" cy="200" r="18" fill="#c1e8e5" />
-    <circle cx="225" cy="200" r="18" fill="#c1e8e5" />
-
-    {/* Banner Background */}
-    <rect x="100" y="270" width="200" height="36" rx="4" fill="#f0f4f8" />
-    
-    {/* Neon Lines */}
-    <line x1="130" y1="265" x2="270" y2="265" stroke="#ff00ff" strokeWidth="3" strokeLinecap="round" />
-    <line x1="130" y1="310" x2="270" y2="310" stroke="#00ffff" strokeWidth="3" strokeLinecap="round" />
-
-    {/* Banner Text */}
-    <text x="200" y="293" fill="#1a2238" fontFamily="sans-serif" fontWeight="800" fontSize="14" textAnchor="middle" letterSpacing="1.5">
-      LEARN CREATE INNOVATE
-    </text>
-
-    {/* Circuit Lines Bottom */}
-    <path d="M 140 325 L 180 325 L 190 335 L 260 335" fill="transparent" stroke="#00aaff" strokeWidth="2" />
-    <path d="M 160 340 L 190 340 L 200 350 L 240 350" fill="transparent" stroke="#00aaff" strokeWidth="2" />
-  </svg>
+  <img src={`${BASE}makerverse-logo.jpg`} alt="Makerverse" className={`${className} rounded-full object-cover`} />
 );
 
 const Nav = () => {
