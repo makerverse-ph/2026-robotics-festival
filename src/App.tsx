@@ -51,24 +51,24 @@ const GAME_CLUSTERS: GameCluster[] = [
     title: 'Morning Session',
     time: 'Morning',
     games: [
-      { name: 'One Minute Challenge', players: '1 Player', grade: 'Grade 1 - 3' },
-      { name: 'One Minute Challenge', players: '1 Player', grade: 'Grade 4 - 8' },
-      { name: 'Innovation', players: '3 Participants', grade: 'Grade 4 - 8' },
-      { name: 'RC-Robo Push', players: '1 Player', grade: 'Grade 9 - 12' },
-      { name: 'Innovation', players: '3 Participants', grade: 'Grade 9 - 12' },
-      { name: 'Innovation', players: '3 Participants', grade: 'Open Category' },
-      { name: 'Auto-Robo Push', players: '1 Player', grade: 'Open Category' },
+      { name: 'MakerBall', players: '1 Player', grade: 'Grade 1 - 3' },
+      { name: 'MakerBall', players: '1 Player', grade: 'Grade 4 - 8' },
+      { name: 'Line Dash', players: '1 Player', grade: 'Grade 9 - 12' },
+      { name: 'Robo Push (RC)', players: '1-2 Players', grade: 'Grade 9 - 12' },
+      { name: 'Line Dash', players: '1 Player', grade: 'Open Category' },
+      { name: 'Robo Push (Auto)', players: '1-2 Players', grade: 'Open Category' },
     ]
   },
   {
     title: 'Afternoon Session',
     time: 'Afternoon',
     games: [
-      { name: 'RC Track Mania', players: '1 Player', grade: 'Grade 1 - 6' },
-      { name: 'Line Dash', players: '1 Player', grade: 'Grade 9 - 12' },
-      { name: 'Soccer Bot', players: '4 Players', grade: 'Grade 9 - 12' },
-      { name: 'Line Dash', players: '1 Player', grade: 'Open Category' },
-      { name: 'Soccer Bot', players: '3 Open + 1 Junior', grade: 'Open Category' },
+      { name: 'Track Mania (RC)', players: '1-2 Players', grade: 'Grade 1 - 6' },
+      { name: 'Track Mania (RC)', players: '1-2 Players', grade: 'Open Category' },
+      { name: 'SoccerBot', players: '3 Players + 1 Coach', grade: 'Open Category' },
+      { name: 'Innovation', players: '1-3 Participants', grade: 'Grade 4 - 8' },
+      { name: 'Innovation', players: '1-3 Participants', grade: 'Grade 9 - 12' },
+      { name: 'Innovation', players: '1-3 Participants', grade: 'Open Category' },
     ]
   }
 ];
@@ -549,7 +549,7 @@ const Venue = () => {
           <div className="order-2 lg:order-1">
             <div className="rounded-[3rem] overflow-hidden shadow-2xl aspect-video lg:aspect-square">
               <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3948.332345678!2d123.3456789!3d8.5678901!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x325499f123456789%3A0x1234567890abcdef!2sZamboanga%20del%20Norte%20Cultural%20and%20Sports%20Center!5e0!3m2!1sen!2sph!4v1234567890123" 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3948.5!2d123.3412!3d8.5871!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zOMKwMzUnMTMuNiJOIDEyM8KwMjAnMjguMyJF!5e0!3m2!1sen!2sph!4v1709900000000" 
                 width="100%" 
                 height="100%" 
                 style={{ border: 0 }} 
