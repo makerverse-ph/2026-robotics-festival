@@ -4,6 +4,7 @@ import path from 'path';
 import {defineConfig} from 'vite';
 
 export default defineConfig({
+  base: '/2026-robotics-festival/',
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
