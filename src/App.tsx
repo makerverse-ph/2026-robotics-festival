@@ -590,6 +590,10 @@ const FAQ = () => {
     {
       question: "What time should I arrive?",
       answer: "Doors open at 7:30 AM for registration and robot inspection. We recommend arriving early to ensure your robot passes inspection before the opening remarks at 8:20 AM."
+    },
+    {
+      question: "How can I get more information?",
+      answer: "Send us a message on our Facebook page (facebook.com/makerverse.ph) or email us at contacts@simriventures.com. We're happy to answer any questions about the event, registration, or competitions."
     }
   ];
 
@@ -674,21 +678,22 @@ const Footer = () => {
           </div>
 
           <div>
-            <h5 className="font-bold text-lg mb-6">Contact</h5>
+            <h5 className="font-bold text-lg mb-6">Contact Us</h5>
             <ul className="space-y-4 text-slate-400">
               <li className="flex items-center gap-3">
                 <MapPin size={18} className="text-orange-500" />
-                <span>Dipolog City, ZN</span>
+                <span>Dipolog City, Zamboanga del Norte</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <svg viewBox="0 0 24 24" fill="currentColor" className="w-[18px] h-[18px] text-orange-500 flex-shrink-0 mt-0.5"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                <a href="mailto:contacts@simriventures.com" className="hover:text-white transition-colors">contacts@simriventures.com</a>
               </li>
               <li className="flex items-center gap-3">
-                <Users size={18} className="text-orange-500" />
-                <span>Volunteer Program</span>
-              </li>
-              <li className="flex items-center gap-3">
-                <Heart size={18} className="text-orange-500" />
-                <span>Sponsorships</span>
+                <Facebook size={18} className="text-orange-500" />
+                <a href="https://www.facebook.com/makerverse.ph" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">facebook.com/makerverse.ph</a>
               </li>
             </ul>
+            <p className="text-slate-500 text-sm mt-6">For inquiries, sponsorships, and volunteering — reach out anytime!</p>
           </div>
         </div>
 
