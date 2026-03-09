@@ -1,0 +1,7 @@
+{
+  "name": "1st Dipolog Robotics Festival",
+  "description": "Official landing page for the 1st Dipolog Robotics Festival and Competition - Empowering the next generation of makers in Zamboanga del Norte.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}

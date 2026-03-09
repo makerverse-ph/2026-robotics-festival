@@ -1,0 +1,870 @@
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { 
+  Bot, 
+  Cpu, 
+  Trophy, 
+  Calendar, 
+  MapPin, 
+  Users, 
+  Zap, 
+  ChevronRight, 
+  Menu, 
+  X, 
+  Rocket, 
+  Lightbulb, 
+  Heart,
+  ArrowRight,
+  Gamepad2,
+  Clock,
+  Facebook,
+  Twitter,
+  Linkedin,
+  Link,
+  Check,
+  Share2,
+  ChevronDown
+} from 'lucide-react';
+
+// --- Types ---
+interface GameCluster {
+  title: string;
+  time: 'Morning' | 'Afternoon';
+  games: {
+    name: string;
+    players: string;
+    grade: string;
+  }[];
+}
+
+// --- Constants ---
+const MAKERVERSE_ORANGE = '#FF6321';
+const MAKERVERSE_BLUE = '#0056B3';
+
+const GAME_CLUSTERS: GameCluster[] = [
+  {
+    title: 'Morning Session',
+    time: 'Morning',
+    games: [
+      { name: 'One Minute Challenge', players: '1 Player', grade: 'Grade 1 - 3' },
+      { name: 'One Minute Challenge', players: '1 Player', grade: 'Grade 4 - 8' },
+      { name: 'Innovation', players: '3 Participants', grade: 'Grade 4 - 8' },
+      { name: 'RC-Robo Push', players: '1 Player', grade: 'Grade 9 - 12' },
+      { name: 'Innovation', players: '3 Participants', grade: 'Grade 9 - 12' },
+      { name: 'Innovation', players: '3 Participants', grade: 'Open Category' },
+      { name: 'Auto-Robo Push', players: '1 Player', grade: 'Open Category' },
+    ]
+  },
+  {
+    title: 'Afternoon Session',
+    time: 'Afternoon',
+    games: [
+      { name: 'RC Track Mania', players: '1 Player', grade: 'Grade 1 - 6' },
+      { name: 'Line Dash', players: '1 Player', grade: 'Grade 9 - 12' },
+      { name: 'Soccer Bot', players: '4 Players', grade: 'Grade 9 - 12' },
+      { name: 'Line Dash', players: '1 Player', grade: 'Open Category' },
+      { name: 'Soccer Bot', players: '3 Open + 1 Junior', grade: 'Open Category' },
+    ]
+  }
+];
+
+// --- Components ---
+
+const MakerverseLogo = ({ className = "w-10 h-10" }: { className?: string }) => (
+  <svg viewBox="0 0 400 400" className={className} xmlns="http://www.w3.org/2000/svg">
+    {/* Background Circle */}
+    <circle cx="200" cy="210" r="140" fill="#90cce6" />
+    
+    {/* Curved Text Path */}
+    <path id="text-curve" d="M 60 200 A 140 140 0 0 1 340 200" fill="transparent" />
+    
+    {/* MAKERVERSE Text */}
+    <text fill="white" fontFamily="sans-serif" fontWeight="900" fontSize="42" letterSpacing="6">
+      <textPath href="#text-curve" startOffset="50%" textAnchor="middle">
+        MAKERVERSE
+      </textPath>
+    </text>
+
+    {/* Robot Shoulders */}
+    <path d="M 120 280 C 120 250, 280 250, 280 280" fill="#1a2238" />
+
+    {/* Earpieces */}
+    <rect x="105" y="150" width="30" height="90" rx="15" fill="#f48225" stroke="#1a2238" strokeWidth="6" />
+    <rect x="265" y="150" width="30" height="90" rx="15" fill="#f48225" stroke="#1a2238" strokeWidth="6" />
+    <rect x="95" y="165" width="20" height="60" rx="10" fill="#1a2238" />
+    <rect x="285" y="165" width="20" height="60" rx="10" fill="#1a2238" />
+
+    {/* Robot Helmet */}
+    <path d="M 125 230 C 110 120, 290 120, 275 230 C 270 260, 130 260, 125 230 Z" fill="#f48225" stroke="#1a2238" strokeWidth="6" />
+    
+    {/* Visor Outer */}
+    <path d="M 135 175 C 135 155, 265 155, 265 175 L 260 225 C 260 245, 140 245, 140 225 Z" fill="#1b3b68" stroke="#1a2238" strokeWidth="6" />
+    
+    {/* Visor Inner Glow */}
+    <path d="M 145 180 C 145 165, 255 165, 255 180 L 250 220 C 250 235, 150 235, 150 220 Z" fill="#2a5a8c" />
+
+    {/* Eyes */}
+    <circle cx="175" cy="200" r="18" fill="#c1e8e5" />
+    <circle cx="225" cy="200" r="18" fill="#c1e8e5" />
+
+    {/* Banner Background */}
+    <rect x="100" y="270" width="200" height="36" rx="4" fill="#f0f4f8" />
+    
+    {/* Neon Lines */}
+    <line x1="130" y1="265" x2="270" y2="265" stroke="#ff00ff" strokeWidth="3" strokeLinecap="round" />
+    <line x1="130" y1="310" x2="270" y2="310" stroke="#00ffff" strokeWidth="3" strokeLinecap="round" />
+
+    {/* Banner Text */}
+    <text x="200" y="293" fill="#1a2238" fontFamily="sans-serif" fontWeight="800" fontSize="14" textAnchor="middle" letterSpacing="1.5">
+      LEARN CREATE INNOVATE
+    </text>
+
+    {/* Circuit Lines Bottom */}
+    <path d="M 140 325 L 180 325 L 190 335 L 260 335" fill="transparent" stroke="#00aaff" strokeWidth="2" />
+    <path d="M 160 340 L 190 340 L 200 350 L 240 350" fill="transparent" stroke="#00aaff" strokeWidth="2" />
+  </svg>
+);
+
+const Nav = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const navLinks = [
+    { name: 'About', href: '#about' },
+    { name: 'Vision', href: '#vision' },
+    { name: 'Competitions', href: '#competitions' },
+    { name: 'Venue', href: '#venue' },
+  ];
+
+  return (
+    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-6'}`}>
+      <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+        <div className="flex items-center gap-2">
+          <MakerverseLogo className="w-12 h-12" />
+          <span className={`font-bold text-xl tracking-tight ${scrolled ? 'text-slate-900' : 'text-white'}`}>
+            MAKERVERSE
+          </span>
+        </div>
+
+        {/* Desktop Nav */}
+        <div className="hidden md:flex items-center gap-8">
+          {navLinks.map((link) => (
+            <a 
+              key={link.name} 
+              href={link.href} 
+              className={`text-sm font-medium hover:text-[#FF6321] transition-colors ${scrolled ? 'text-slate-600' : 'text-white/80'}`}
+            >
+              {link.name}
+            </a>
+          ))}
+          <button className="bg-[#FF6321] text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-[#e55a1e] transition-all shadow-lg shadow-orange-500/20">
+            Register Now
+          </button>
+        </div>
+
+        {/* Mobile Menu Toggle */}
+        <button className="md:hidden text-slate-900" onClick={() => setIsOpen(!isOpen)}>
+          {isOpen ? <X className={scrolled ? 'text-slate-900' : 'text-white'} /> : <Menu className={scrolled ? 'text-slate-900' : 'text-white'} />}
+        </button>
+      </div>
+
+      {/* Mobile Nav */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="absolute top-full left-0 w-full bg-white shadow-xl py-6 px-6 flex flex-col gap-4 md:hidden"
+          >
+            {navLinks.map((link) => (
+              <a 
+                key={link.name} 
+                href={link.href} 
+                className="text-lg font-medium text-slate-600 hover:text-[#FF6321]"
+                onClick={() => setIsOpen(false)}
+              >
+                {link.name}
+              </a>
+            ))}
+            <button className="bg-[#FF6321] text-white px-5 py-3 rounded-xl text-center font-semibold">
+              Register Now
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </nav>
+  );
+};
+
+const Hero = () => {
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
+
+  useEffect(() => {
+    // Target date: April 11, 2026, 07:30:00 GMT+0800 (Philippine Standard Time)
+    const targetDate = new Date('2026-04-11T07:30:00+08:00').getTime();
+
+    const updateCountdown = () => {
+      const now = new Date().getTime();
+      const difference = targetDate - now;
+
+      if (difference > 0) {
+        setTimeLeft({
+          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+          minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
+          seconds: Math.floor((difference % (1000 * 60)) / 1000),
+        });
+      } else {
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+      }
+    };
+
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-slate-900">
+      {/* Background Elements */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-orange-500/10 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2" />
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-500/10 blur-[100px] rounded-full translate-y-1/2 -translate-x-1/2" />
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20" />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10 grid lg:grid-cols-2 gap-12 items-center">
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-xs font-bold uppercase tracking-widest mb-6">
+            <Zap size={14} />
+            The Countryside Movement
+          </div>
+          <h1 className="text-5xl md:text-7xl font-black text-white leading-tight mb-6">
+            1st Dipolog <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF6321] to-orange-400">
+              Robotics Festival
+            </span>
+          </h1>
+          <p className="text-lg text-slate-400 max-w-xl mb-8 leading-relaxed">
+            Join the movement that empowers the countryside. A free, advocacy-driven STEM event designed to spark curiosity and build the next generation of makers.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4">
+            <button className="bg-[#FF6321] text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-[#e55a1e] transition-all flex items-center justify-center gap-2 group shadow-2xl shadow-orange-500/30">
+              Join the Competition
+              <ArrowRight className="group-hover:translate-x-1 transition-transform" />
+            </button>
+            <button 
+              onClick={() => document.getElementById('share')?.scrollIntoView({ behavior: 'smooth' })}
+              className="bg-white/5 text-white border border-white/10 px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/10 transition-all flex items-center justify-center gap-2 backdrop-blur-sm"
+            >
+              <Share2 size={20} />
+              Share Event
+            </button>
+          </div>
+
+          <div className="mt-12 border-t border-white/10 pt-8">
+            <div className="flex flex-wrap items-center gap-8 mb-8">
+              <div className="flex flex-col">
+                <span className="text-white font-bold text-2xl">April 11</span>
+                <span className="text-slate-500 text-sm uppercase tracking-wider">Event Date</span>
+              </div>
+              <div className="w-px h-10 bg-white/10 hidden sm:block" />
+              <div className="flex flex-col">
+                <span className="text-white font-bold text-2xl">FREE</span>
+                <span className="text-slate-500 text-sm uppercase tracking-wider">Registration</span>
+              </div>
+              <div className="w-px h-10 bg-white/10 hidden sm:block" />
+              <div className="flex flex-col">
+                <span className="text-white font-bold text-2xl">200+</span>
+                <span className="text-slate-500 text-sm uppercase tracking-wider">Participants</span>
+              </div>
+            </div>
+
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-5 inline-block backdrop-blur-sm shadow-xl">
+              <p className="text-slate-400 text-xs uppercase tracking-widest mb-4 font-bold flex items-center gap-2">
+                <Clock size={14} className="text-[#FF6321]" />
+                Countdown to Launch
+              </p>
+              <div className="flex items-center gap-3 sm:gap-5">
+                <div className="flex flex-col items-center min-w-[60px]">
+                  <span className="text-white font-black text-4xl font-mono">{timeLeft.days.toString().padStart(2, '0')}</span>
+                  <span className="text-slate-500 text-[10px] uppercase tracking-wider mt-1">Days</span>
+                </div>
+                <span className="text-white/20 text-3xl font-black pb-4">:</span>
+                <div className="flex flex-col items-center min-w-[60px]">
+                  <span className="text-white font-black text-4xl font-mono">{timeLeft.hours.toString().padStart(2, '0')}</span>
+                  <span className="text-slate-500 text-[10px] uppercase tracking-wider mt-1">Hours</span>
+                </div>
+                <span className="text-white/20 text-3xl font-black pb-4">:</span>
+                <div className="flex flex-col items-center min-w-[60px]">
+                  <span className="text-white font-black text-4xl font-mono">{timeLeft.minutes.toString().padStart(2, '0')}</span>
+                  <span className="text-slate-500 text-[10px] uppercase tracking-wider mt-1">Mins</span>
+                </div>
+                <span className="text-white/20 text-3xl font-black pb-4">:</span>
+                <div className="flex flex-col items-center min-w-[60px]">
+                  <span className="text-[#FF6321] font-black text-4xl font-mono">{timeLeft.seconds.toString().padStart(2, '0')}</span>
+                  <span className="text-slate-500 text-[10px] uppercase tracking-wider mt-1">Secs</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8, rotate: 5 }}
+          animate={{ opacity: 1, scale: 1, rotate: 0 }}
+          transition={{ duration: 1, delay: 0.2 }}
+          className="relative hidden lg:block"
+        >
+          <div className="relative z-10 bg-gradient-to-br from-slate-800 to-slate-900 p-4 rounded-[2rem] border border-white/10 shadow-3xl">
+            <img 
+              src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=800" 
+              alt="Robotics" 
+              className="rounded-[1.5rem] w-full h-auto object-cover"
+              referrerPolicy="no-referrer"
+            />
+            {/* Floating UI Elements */}
+            <div className="absolute -top-6 -right-6 bg-white p-4 rounded-2xl shadow-xl flex items-center gap-3 animate-bounce">
+              <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center text-orange-600">
+                <Trophy size={20} />
+              </div>
+              <div>
+                <p className="text-xs text-slate-500 font-medium">Grand Prize</p>
+                <p className="text-sm font-bold text-slate-900">3D Printed Trophy</p>
+              </div>
+            </div>
+            
+            <div className="absolute -bottom-6 -left-6 bg-slate-900 p-4 rounded-2xl border border-white/10 shadow-xl flex items-center gap-3">
+              <div className="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center text-blue-400">
+                <Cpu size={20} />
+              </div>
+              <div>
+                <p className="text-xs text-slate-500 font-medium">Tech Stack</p>
+                <p className="text-sm font-bold text-white">Makerverse Ecosystem</p>
+              </div>
+            </div>
+          </div>
+          {/* Decorative Rings */}
+          <div className="absolute inset-0 border-2 border-orange-500/20 rounded-[2rem] scale-105 -rotate-3 -z-10" />
+          <div className="absolute inset-0 border-2 border-blue-500/20 rounded-[2rem] scale-110 rotate-3 -z-20" />
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+const About = () => {
+  return (
+    <section id="about" className="py-24 bg-white">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div>
+            <h2 className="text-sm font-bold text-[#FF6321] uppercase tracking-[0.2em] mb-4">About the Festival</h2>
+            <h3 className="text-4xl md:text-5xl font-black text-slate-900 mb-6 leading-tight">
+              Promoting STEM & Innovation for All
+            </h3>
+            <p className="text-lg text-slate-600 mb-8 leading-relaxed">
+              The Dipolog Robotics Festival is a non-profit, advocacy-driven STEM event intended to promote Science, Technology, Engineering, Mathematics (STEM), innovation, and robotics among the youth of Dipolog City and the wider Zamboanga del Norte community.
+            </p>
+            
+            <div className="grid sm:grid-cols-2 gap-6">
+              <div className="flex gap-4">
+                <div className="flex-shrink-0 w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center text-[#FF6321]">
+                  <Users size={24} />
+                </div>
+                <div>
+                  <h4 className="font-bold text-slate-900 mb-1">Inclusive Access</h4>
+                  <p className="text-sm text-slate-500">Free of charge, ensuring participation is accessible to all interested learners.</p>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="flex-shrink-0 w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600">
+                  <Rocket size={24} />
+                </div>
+                <div>
+                  <h4 className="font-bold text-slate-900 mb-1">Hands-on Learning</h4>
+                  <p className="text-sm text-slate-500">Interactive exhibits and guided sessions designed to spark curiosity.</p>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="flex-shrink-0 w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center text-green-600">
+                  <Lightbulb size={24} />
+                </div>
+                <div>
+                  <h4 className="font-bold text-slate-900 mb-1">Problem Solving</h4>
+                  <p className="text-sm text-slate-500">Strengthening skills through real-world robotics challenges.</p>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="flex-shrink-0 w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center text-purple-600">
+                  <Heart size={24} />
+                </div>
+                <div>
+                  <h4 className="font-bold text-slate-900 mb-1">Advocacy Driven</h4>
+                  <p className="text-sm text-slate-500">Building a movement that empowers the countryside youth.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="relative">
+            <div className="aspect-square rounded-[3rem] overflow-hidden shadow-2xl">
+              <img 
+                src="https://images.unsplash.com/photo-1561557944-6e7860d1a7eb?auto=format&fit=crop&q=80&w=800" 
+                alt="Students Learning" 
+                className="w-full h-full object-cover"
+                referrerPolicy="no-referrer"
+              />
+            </div>
+            <div className="absolute -bottom-10 -right-10 bg-[#003366] text-white p-8 rounded-[2rem] shadow-2xl max-w-xs hidden sm:block">
+              <p className="text-3xl font-black mb-2">150-200</p>
+              <p className="text-sm opacity-80 font-medium">Anticipated participants from public and private schools.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const Vision = () => {
+  return (
+    <section id="vision" className="py-24 bg-slate-900 relative overflow-hidden">
+      <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
+      <div className="max-w-4xl mx-auto px-6 relative z-10 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <div className="w-16 h-16 bg-orange-500/20 rounded-full flex items-center justify-center text-orange-400 mx-auto mb-8">
+            <Rocket size={32} />
+          </div>
+          <blockquote className="text-2xl md:text-3xl font-serif italic text-white leading-relaxed mb-10">
+            "Our vision at Makerverse is not just to teach. It’s to build a movement. A movement that empowers the countryside, that creates confident makers out of curious kids. We believe learning tech shouldn’t be a luxury. It should be a right."
+          </blockquote>
+          <div className="flex flex-col items-center">
+            <p className="text-xl font-bold text-white mb-1">Loyd Ocampo</p>
+            <p className="text-sm text-orange-400 font-bold uppercase tracking-widest">Founder, Makerverse</p>
+            <p className="text-xs text-slate-500 mt-4 max-w-md">
+              Excerpt of a speech delivered at 2025 Summer Robot Games International Open & Youth Robotics Convention, Philippines
+            </p>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+const Competitions = () => {
+  return (
+    <section id="competitions" className="py-24 bg-slate-50">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="text-center mb-16">
+          <h2 className="text-sm font-bold text-[#FF6321] uppercase tracking-[0.2em] mb-4">Competition Clusters</h2>
+          <h3 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">Choose Your Challenge</h3>
+          <p className="text-slate-600 max-w-2xl mx-auto">
+            Participants can join all game clusters, but are limited to 1 game per cluster (or 2 in selected clusters). Find the perfect match for your grade level.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-8">
+          {GAME_CLUSTERS.map((cluster, idx) => (
+            <div key={idx} className="bg-white rounded-3xl p-8 shadow-sm border border-slate-100">
+              <div className="flex items-center justify-between mb-8">
+                <div className="flex items-center gap-3">
+                  <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${cluster.time === 'Morning' ? 'bg-orange-100 text-orange-600' : 'bg-blue-100 text-blue-600'}`}>
+                    {cluster.time === 'Morning' ? <Clock size={24} /> : <Zap size={24} />}
+                  </div>
+                  <h4 className="text-2xl font-black text-slate-900">{cluster.title}</h4>
+                </div>
+                <span className="px-4 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-bold uppercase tracking-wider">
+                  {cluster.time}
+                </span>
+              </div>
+
+              <div className="space-y-4">
+                {cluster.games.map((game, gIdx) => (
+                  <div key={gIdx} className="group flex items-center justify-between p-4 rounded-2xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-200">
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-400 group-hover:bg-white group-hover:text-[#FF6321] transition-all">
+                        <Gamepad2 size={20} />
+                      </div>
+                      <div>
+                        <p className="font-bold text-slate-900">{game.name}</p>
+                        <p className="text-xs text-slate-500">{game.grade} • {game.players}</p>
+                      </div>
+                    </div>
+                    <ChevronRight size={18} className="text-slate-300 group-hover:text-[#FF6321] transition-all" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-16 bg-[#003366] rounded-[2.5rem] p-12 text-center text-white relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-blue-400/10 blur-3xl rounded-full -translate-y-1/2 translate-x-1/2" />
+          <h4 className="text-3xl font-black mb-4">Ready to compete?</h4>
+          <p className="text-blue-100/80 mb-8 max-w-xl mx-auto">
+            Registration is completely free. Secure your spot now and join the first-ever robotics festival in Dipolog City.
+          </p>
+          <button className="bg-[#FF6321] text-white px-10 py-4 rounded-xl font-bold text-lg hover:bg-[#e55a1e] transition-all shadow-xl shadow-orange-900/40">
+            Register for Free
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const Venue = () => {
+  return (
+    <section id="venue" className="py-24 bg-white">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div className="order-2 lg:order-1">
+            <div className="rounded-[3rem] overflow-hidden shadow-2xl aspect-video lg:aspect-square">
+              <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3948.332345678!2d123.3456789!3d8.5678901!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x325499f123456789%3A0x1234567890abcdef!2sZamboanga%20del%20Norte%20Cultural%20and%20Sports%20Center!5e0!3m2!1sen!2sph!4v1234567890123" 
+                width="100%" 
+                height="100%" 
+                style={{ border: 0 }} 
+                allowFullScreen={true} 
+                loading="lazy" 
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Venue Map"
+              />
+            </div>
+          </div>
+          
+          <div className="order-1 lg:order-2">
+            <h2 className="text-sm font-bold text-[#FF6321] uppercase tracking-[0.2em] mb-4">Location & Date</h2>
+            <h3 className="text-4xl md:text-5xl font-black text-slate-900 mb-8 leading-tight">
+              ZDN Cultural and <br />Sports Center
+            </h3>
+            
+            <div className="space-y-8">
+              <div className="flex gap-6">
+                <div className="flex-shrink-0 w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center text-[#FF6321]">
+                  <MapPin size={28} />
+                </div>
+                <div>
+                  <h4 className="text-xl font-bold text-slate-900 mb-2">The Venue</h4>
+                  <p className="text-slate-600 leading-relaxed">
+                    General Luna, Estaka, Dipolog City, Zamboanga del Norte. <br />
+                    A premier facility hosting the first-ever robotics festival.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex gap-6">
+                <div className="flex-shrink-0 w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600">
+                  <Calendar size={28} />
+                </div>
+                <div>
+                  <h4 className="text-xl font-bold text-slate-900 mb-2">Save the Date</h4>
+                  <p className="text-slate-600 leading-relaxed">
+                    April 11, 2026. <br />
+                    Doors open at 7:30 AM for registration and inspection.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex gap-6">
+                <div className="flex-shrink-0 w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center text-green-600">
+                  <Clock size={28} />
+                </div>
+                <div>
+                  <h4 className="text-xl font-bold text-slate-900 mb-2">Schedule</h4>
+                  <p className="text-slate-600 leading-relaxed">
+                    Morning Sessions: 9:30 AM - 12:00 PM <br />
+                    Afternoon Sessions: 1:00 PM - 4:00 PM <br />
+                    Awarding Ceremony: 4:15 PM
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const FAQ = () => {
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
+
+  const faqs = [
+    {
+      question: "Is there a registration fee?",
+      answer: "No, the Dipolog Robotics Festival is completely free of charge. Our goal is to make STEM accessible to all interested learners, especially students from public schools."
+    },
+    {
+      question: "Who can participate in the competitions?",
+      answer: "The event is open to students from Grade 1 to Grade 12, as well as an Open Category for older participants, teachers, mentors, and hobbyists. Check the specific game categories for grade requirements."
+    },
+    {
+      question: "How many games can I join?",
+      answer: "Participants can join all game clusters, but are limited to 1 game per cluster, or 2 games in selected clusters. Make sure to check the schedule to avoid conflicts."
+    },
+    {
+      question: "What should participants bring?",
+      answer: "Participants must bring their fully assembled robot, measuring tools (ruler/tape measure), a stopwatch/timer, and any tools for minor adjustments. If your game requires it, bring ping-pong balls, extra batteries, and your remote controller."
+    },
+    {
+      question: "Where is the venue located?",
+      answer: "The event will be held at the Zamboanga del Norte Cultural and Sports Center, located at General Luna, Estaka, Dipolog City."
+    },
+    {
+      question: "What time should I arrive?",
+      answer: "Doors open at 7:30 AM for registration and robot inspection. We recommend arriving early to ensure your robot passes inspection before the opening remarks at 8:20 AM."
+    }
+  ];
+
+  return (
+    <section className="py-24 bg-slate-50">
+      <div className="max-w-3xl mx-auto px-6">
+        <div className="text-center mb-16">
+          <h2 className="text-sm font-bold text-[#FF6321] uppercase tracking-[0.2em] mb-4">Got Questions?</h2>
+          <h3 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">Frequently Asked Questions</h3>
+          <p className="text-slate-600">Everything you need to know about the 1st Dipolog Robotics Festival.</p>
+        </div>
+
+        <div className="space-y-4">
+          {faqs.map((faq, idx) => (
+            <div 
+              key={idx} 
+              className={`bg-white border rounded-2xl overflow-hidden transition-all duration-300 ${openIndex === idx ? 'border-[#FF6321] shadow-md' : 'border-slate-200 hover:border-slate-300'}`}
+            >
+              <button 
+                className="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none"
+                onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
+              >
+                <span className="font-bold text-slate-900 pr-4">{faq.question}</span>
+                <ChevronDown 
+                  className={`text-slate-400 transition-transform duration-300 flex-shrink-0 ${openIndex === idx ? 'rotate-180 text-[#FF6321]' : ''}`} 
+                  size={20} 
+                />
+              </button>
+              <AnimatePresence>
+                {openIndex === idx && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                  >
+                    <div className="px-6 pb-5 text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
+                      {faq.answer}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const Footer = () => {
+  return (
+    <footer className="bg-slate-900 pt-20 pb-10 text-white">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+          <div className="lg:col-span-2">
+            <div className="flex items-center gap-2 mb-6">
+              <MakerverseLogo className="w-12 h-12" />
+              <span className="font-bold text-2xl tracking-tight">MAKERVERSE</span>
+            </div>
+            <p className="text-slate-400 max-w-sm mb-8 leading-relaxed">
+              Building a movement that empowers the countryside and creates confident makers out of curious kids.
+            </p>
+            <div className="flex gap-4">
+              {['facebook', 'twitter', 'instagram', 'youtube'].map((social) => (
+                <a key={social} href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-[#FF6321] transition-all border border-white/10">
+                  <span className="sr-only">{social}</span>
+                  <div className="w-5 h-5 bg-white/20 rounded-sm" />
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h5 className="font-bold text-lg mb-6">Quick Links</h5>
+            <ul className="space-y-4 text-slate-400">
+              <li><a href="#about" className="hover:text-white transition-colors">About Us</a></li>
+              <li><a href="#competitions" className="hover:text-white transition-colors">Competitions</a></li>
+              <li><a href="#venue" className="hover:text-white transition-colors">Venue Details</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Game Rules</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h5 className="font-bold text-lg mb-6">Contact</h5>
+            <ul className="space-y-4 text-slate-400">
+              <li className="flex items-center gap-3">
+                <MapPin size={18} className="text-orange-500" />
+                <span>Dipolog City, ZN</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <Users size={18} className="text-orange-500" />
+                <span>Volunteer Program</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <Heart size={18} className="text-orange-500" />
+                <span>Sponsorships</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-500 text-sm">
+          <p>© 2026 Makerverse. All rights reserved.</p>
+          <div className="flex gap-8">
+            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
+            <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+const Promotional = () => {
+  const [copied, setCopied] = useState(false);
+  
+  const shareUrl = typeof window !== 'undefined' ? window.location.href : 'https://makerverse.com';
+  const shareText = "Join me at the 1st Dipolog Robotics Festival - Empowering the countryside youth through STEM!";
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(shareUrl);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const shareFacebook = () => {
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, '_blank', 'width=600,height=400');
+  };
+
+  const shareTwitter = () => {
+    window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`, '_blank', 'width=600,height=400');
+  };
+
+  const shareLinkedin = () => {
+    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`, '_blank', 'width=600,height=400');
+  };
+
+  return (
+    <section id="share" className="py-24 bg-[#FF6321] text-white overflow-hidden relative">
+      <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+        <div className="absolute top-10 left-10 text-[10rem] font-black select-none">DIPOLOG</div>
+        <div className="absolute bottom-10 right-10 text-[10rem] font-black select-none">ROBOTICS</div>
+      </div>
+      
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-6xl md:text-8xl font-black mb-8 leading-none tracking-tighter">
+              A FIRST <br />FOR DIPOLOG
+            </h2>
+            <p className="text-xl md:text-2xl font-medium text-orange-100 mb-10 max-w-lg leading-relaxed">
+              History is being made. For the first time, the youth of Zamboanga del Norte will have a dedicated stage to showcase their engineering prowess and innovative spirit.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <div className="bg-white/10 backdrop-blur-md border border-white/20 px-6 py-4 rounded-2xl">
+                <p className="text-3xl font-bold mb-1">01</p>
+                <p className="text-xs uppercase tracking-widest font-bold opacity-80">Historical Event</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-md border border-white/20 px-6 py-4 rounded-2xl">
+                <p className="text-3xl font-bold mb-1">100%</p>
+                <p className="text-xs uppercase tracking-widest font-bold opacity-80">Free Access</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-md border border-white/20 px-6 py-4 rounded-2xl">
+                <p className="text-3xl font-bold mb-1">STEM</p>
+                <p className="text-xs uppercase tracking-widest font-bold opacity-80">Focused Advocacy</p>
+              </div>
+            </div>
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="bg-white text-slate-900 p-10 rounded-[3rem] shadow-3xl"
+          >
+            <h4 className="text-2xl font-black mb-6">Spread the Word</h4>
+            <p className="text-slate-600 mb-8 leading-relaxed">
+              Help us build this movement. Share this event with students, teachers, and parents in your community. Let's make tech accessible to every curious kid in the countryside.
+            </p>
+            <div className="space-y-4">
+              <button onClick={shareFacebook} className="w-full bg-[#1877F2] text-white py-4 rounded-xl font-bold flex items-center justify-center gap-3 hover:bg-[#1864D9] transition-all">
+                <Facebook fill="currentColor" size={20} />
+                Share on Facebook
+              </button>
+              <button onClick={shareTwitter} className="w-full bg-[#1DA1F2] text-white py-4 rounded-xl font-bold flex items-center justify-center gap-3 hover:bg-[#1A91DA] transition-all">
+                <Twitter fill="currentColor" size={20} className="text-white" />
+                Share on Twitter
+              </button>
+              <button onClick={shareLinkedin} className="w-full bg-[#0A66C2] text-white py-4 rounded-xl font-bold flex items-center justify-center gap-3 hover:bg-[#0958A8] transition-all">
+                <Linkedin fill="currentColor" size={20} />
+                Share on LinkedIn
+              </button>
+              <button onClick={handleCopy} className="w-full bg-slate-100 text-slate-900 py-4 rounded-xl font-bold flex items-center justify-center gap-3 hover:bg-slate-200 transition-all border border-slate-200">
+                {copied ? <Check size={20} className="text-green-600" /> : <Link size={20} />}
+                {copied ? 'Link Copied!' : 'Copy Event Link'}
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default function App() {
+  return (
+    <div className="min-h-screen bg-slate-50 font-sans selection:bg-orange-500/30 selection:text-orange-900">
+      <Nav />
+      <main>
+        <Hero />
+        <About />
+        <Vision />
+        <Promotional />
+        <Competitions />
+        <Venue />
+        <FAQ />
+      </main>
+      <Footer />
+    </div>
+  );
+}
