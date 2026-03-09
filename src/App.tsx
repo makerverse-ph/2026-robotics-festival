@@ -291,7 +291,7 @@ const Hero = () => {
         >
           <div className="relative z-10 flex items-center justify-center">
             <motion.img 
-              src={`${BASE}mascot.jpg`}
+              src={`${BASE}mascot.png`}
               alt="Makerverse Mascot" 
               className="w-[400px] h-auto drop-shadow-[0_20px_60px_rgba(255,99,33,0.3)]"
               animate={{ y: [0, -20, 0] }}
@@ -593,7 +593,7 @@ const FAQ = () => {
     },
     {
       question: "How can I get more information?",
-      answer: "Send us a message on our Facebook page (facebook.com/makerverse.ph) or email us at contacts@simriventures.com. We're happy to answer any questions about the event, registration, or competitions."
+      answer: "Send us a message on our Facebook page (facebook.com/makerverse.ph) or email us at contact@simriventures.com. We're happy to answer any questions about the event, registration, or competitions."
     }
   ];
 
@@ -686,7 +686,7 @@ const Footer = () => {
               </li>
               <li className="flex items-start gap-3">
                 <svg viewBox="0 0 24 24" fill="currentColor" className="w-[18px] h-[18px] text-orange-500 flex-shrink-0 mt-0.5"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                <a href="mailto:contacts@simriventures.com" className="hover:text-white transition-colors">contacts@simriventures.com</a>
+                <a href="mailto:contact@simriventures.com" className="hover:text-white transition-colors">contact@simriventures.com</a>
               </li>
               <li className="flex items-center gap-3">
                 <Facebook size={18} className="text-orange-500" />
