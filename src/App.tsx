@@ -45,6 +45,7 @@ interface GameCluster {
 // --- Constants ---
 const MAKERVERSE_ORANGE = '#FF6321';
 const MAKERVERSE_BLUE = '#0056B3';
+const REGISTRATION_URL = 'https://forms.gle/6W3upEFHpdKqzuJv6';
 
 const GAME_CLUSTERS: GameCluster[] = [
   {
@@ -119,9 +120,14 @@ const Nav = () => {
               {link.name}
             </a>
           ))}
-          <button className="bg-[#FF6321] text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-[#e55a1e] transition-all shadow-lg shadow-orange-500/20">
+          <a
+            href={REGISTRATION_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-[#FF6321] text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-[#e55a1e] transition-all shadow-lg shadow-orange-500/20"
+          >
             Register Now
-          </button>
+          </a>
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -149,9 +155,14 @@ const Nav = () => {
                 {link.name}
               </a>
             ))}
-            <button className="bg-[#FF6321] text-white px-5 py-3 rounded-xl text-center font-semibold">
+            <a
+              href={REGISTRATION_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-[#FF6321] text-white px-5 py-3 rounded-xl text-center font-semibold"
+            >
               Register Now
-            </button>
+            </a>
           </motion.div>
         )}
       </AnimatePresence>
@@ -222,10 +233,15 @@ const Hero = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4">
-            <button className="bg-[#FF6321] text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-[#e55a1e] transition-all flex items-center justify-center gap-2 group shadow-2xl shadow-orange-500/30">
+            <a
+              href={REGISTRATION_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-[#FF6321] text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-[#e55a1e] transition-all flex items-center justify-center gap-2 group shadow-2xl shadow-orange-500/30"
+            >
               Join the Competition
               <ArrowRight className="group-hover:translate-x-1 transition-transform" />
-            </button>
+            </a>
             <button 
               onClick={() => document.getElementById('share')?.scrollIntoView({ behavior: 'smooth' })}
               className="bg-white/5 text-white border border-white/10 px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/10 transition-all flex items-center justify-center gap-2 backdrop-blur-sm"
@@ -480,9 +496,14 @@ const Competitions = () => {
           <p className="text-blue-100/80 mb-8 max-w-xl mx-auto">
             Registration is completely free. Secure your spot now and join the first-ever robotics festival in Dipolog City.
           </p>
-          <button className="bg-[#FF6321] text-white px-10 py-4 rounded-xl font-bold text-lg hover:bg-[#e55a1e] transition-all shadow-xl shadow-orange-900/40">
+          <a
+            href={REGISTRATION_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-[#FF6321] text-white px-10 py-4 rounded-xl font-bold text-lg hover:bg-[#e55a1e] transition-all shadow-xl shadow-orange-900/40 inline-block"
+          >
             Register for Free
-          </button>
+          </a>
         </div>
       </div>
     </section>
