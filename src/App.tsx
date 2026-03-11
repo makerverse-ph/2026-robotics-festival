@@ -32,46 +32,26 @@ import {
 } from 'lucide-react';
 
 // --- Types ---
-interface GameCluster {
-  title: string;
-  time: 'Morning' | 'Afternoon';
-  games: {
-    name: string;
-    players: string;
-    grade: string;
-  }[];
+interface GameEvent {
+  name: string;
+  players: string;
+  levels: string[];
 }
 
 // --- Constants ---
 const MAKERVERSE_ORANGE = '#FF6321';
 const MAKERVERSE_BLUE = '#0056B3';
 const REGISTRATION_URL = 'https://forms.gle/6W3upEFHpdKqzuJv6';
+const GAME_RULES_URL = '/game-rules-and-details.pdf';
 
-const GAME_CLUSTERS: GameCluster[] = [
-  {
-    title: 'Morning Session',
-    time: 'Morning',
-    games: [
-      { name: 'MakerBall', players: '1 Player', grade: 'Grade 1 - 3' },
-      { name: 'MakerBall', players: '1 Player', grade: 'Grade 4 - 8' },
-      { name: 'Line Dash', players: '1 Player', grade: 'Grade 9 - 12' },
-      { name: 'Robo Push (RC)', players: '1-2 Players', grade: 'Grade 9 - 12' },
-      { name: 'Line Dash', players: '1 Player', grade: 'Open Category' },
-      { name: 'Robo Push (Auto)', players: '1-2 Players', grade: 'Open Category' },
-    ]
-  },
-  {
-    title: 'Afternoon Session',
-    time: 'Afternoon',
-    games: [
-      { name: 'Track Mania (RC)', players: '1-2 Players', grade: 'Grade 1 - 6' },
-      { name: 'Track Mania (RC)', players: '1-2 Players', grade: 'Open Category' },
-      { name: 'SoccerBot', players: '3 Players + 1 Coach', grade: 'Open Category' },
-      { name: 'Innovation', players: '1-3 Participants', grade: 'Grade 4 - 8' },
-      { name: 'Innovation', players: '1-3 Participants', grade: 'Grade 9 - 12' },
-      { name: 'Innovation', players: '1-3 Participants', grade: 'Open Category' },
-    ]
-  }
+const GAME_EVENTS: GameEvent[] = [
+  { name: 'MakerBall', players: '1 Player', levels: ['Grade 1 - 3', 'Grade 4 - 8'] },
+  { name: 'Line Dash', players: '1 Player', levels: ['Grade 9 - 12', 'Open Category'] },
+  { name: 'Robo Push (RC)', players: '1-2 Players', levels: ['Grade 9 - 12'] },
+  { name: 'Robo Push (Auto)', players: '1-2 Players', levels: ['Open Category'] },
+  { name: 'Track Mania (RC)', players: '1-2 Players', levels: ['Grade 1 - 6', 'Open Category'] },
+  { name: 'SoccerBot', players: '3 Players + 1 Coach', levels: ['Open Category'] },
+  { name: 'Innovation', players: '1-3 Participants', levels: ['Grade 4 - 8', 'Grade 9 - 12', 'Open Category'] },
 ];
 
 // --- Components ---
@@ -448,42 +428,39 @@ const Competitions = () => {
     <section id="competitions" className="py-24 bg-slate-50">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-sm font-bold text-[#FF6321] uppercase tracking-[0.2em] mb-4">Competition Clusters</h2>
+          <h2 className="text-sm font-bold text-[#FF6321] uppercase tracking-[0.2em] mb-4">Competition Events</h2>
           <h3 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">Choose Your Challenge</h3>
           <p className="text-slate-600 max-w-2xl mx-auto">
-            Participants can join all game clusters, but are limited to 1 game per cluster (or 2 in selected clusters). Find the perfect match for your grade level.
+            Explore the full list of game events available for participants. Choose based on your age division and team setup.
           </p>
+          <a
+            href={GAME_RULES_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 mt-6 text-[#0056B3] font-semibold hover:text-[#003d80]"
+          >
+            View complete game rules and details (PDF)
+            <ChevronRight size={16} />
+          </a>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
-          {GAME_CLUSTERS.map((cluster, idx) => (
+          {GAME_EVENTS.map((game, idx) => (
             <div key={idx} className="bg-white rounded-3xl p-8 shadow-sm border border-slate-100">
-              <div className="flex items-center justify-between mb-8">
-                <div className="flex items-center gap-3">
-                  <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${cluster.time === 'Morning' ? 'bg-orange-100 text-orange-600' : 'bg-blue-100 text-blue-600'}`}>
-                    {cluster.time === 'Morning' ? <Clock size={24} /> : <Zap size={24} />}
-                  </div>
-                  <h4 className="text-2xl font-black text-slate-900">{cluster.title}</h4>
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-blue-100 text-blue-600">
+                  <Gamepad2 size={24} />
                 </div>
-                <span className="px-4 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-bold uppercase tracking-wider">
-                  {cluster.time}
-                </span>
+                <h4 className="text-2xl font-black text-slate-900">{game.name}</h4>
               </div>
 
-              <div className="space-y-4">
-                {cluster.games.map((game, gIdx) => (
-                  <div key={gIdx} className="group flex items-center justify-between p-4 rounded-2xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-200">
-                    <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-400 group-hover:bg-white group-hover:text-[#FF6321] transition-all">
-                        <Gamepad2 size={20} />
-                      </div>
-                      <div>
-                        <p className="font-bold text-slate-900">{game.name}</p>
-                        <p className="text-xs text-slate-500">{game.grade} • {game.players}</p>
-                      </div>
-                    </div>
-                    <ChevronRight size={18} className="text-slate-300 group-hover:text-[#FF6321] transition-all" />
-                  </div>
+              <p className="text-sm font-medium text-slate-600 mb-4">Team Setup: {game.players}</p>
+
+              <div className="flex flex-wrap gap-2">
+                {game.levels.map((level, levelIdx) => (
+                  <span key={levelIdx} className="px-3 py-1.5 rounded-full bg-slate-100 text-slate-700 text-xs font-semibold">
+                    {level}
+                  </span>
                 ))}
               </div>
             </div>
