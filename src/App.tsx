@@ -34,6 +34,7 @@ import {
 // --- Types ---
 interface GameEvent {
   name: string;
+  type: 'Autonomous' | 'RC' | 'Theme-based';
   players: string;
   levels: string[];
 }
@@ -45,13 +46,13 @@ const REGISTRATION_URL = 'https://forms.gle/6W3upEFHpdKqzuJv6';
 const GAME_RULES_URL = '/game-rules-and-details.pdf';
 
 const GAME_EVENTS: GameEvent[] = [
-  { name: 'Line Tracing (Programmable)', players: '1 Player', levels: ['Grade 1 - 3', 'Grade 4 - 8', 'Grade 9 - 12', 'Open'] },
-  { name: 'Shoot the Ball / MakerBall', players: '1 Player', levels: ['Grade 1 - 3', 'Grade 4 - 8'] },
-  { name: 'Sumobot / Robo Push (Autonomous)', players: '1-2 Players', levels: ['Open'] },
-  { name: 'Sumobot / Robo Push (RC)', players: '1-2 Players', levels: ['Grade 4 - 8', 'Grade 9 - 12', 'Open'] },
-  { name: 'SoccerBot (RC)', players: '3 Players + 1 Coach', levels: ['Open'] },
-  { name: 'Track Mania (RC)', players: '1-2 Players', levels: ['Open'] },
-  { name: 'Innovation / Future Makers', players: '1-3 Participants', levels: ['Grade 4 - 8', 'Grade 9 - 12', 'Open'] },
+  { name: 'Line Tracing (Programmable)', type: 'Autonomous', players: '1 Player', levels: ['Grade 1 - 3', 'Grade 4 - 8', 'Grade 9 - 12', 'Open'] },
+  { name: 'Shoot the Ball / MakerBall', type: 'Autonomous', players: '1 Player', levels: ['Grade 1 - 3', 'Grade 4 - 8'] },
+  { name: 'Sumobot / Robo Push (Autonomous)', type: 'Autonomous', players: '1-2 Players', levels: ['Open'] },
+  { name: 'Sumobot / Robo Push (RC)', type: 'RC', players: '1-2 Players', levels: ['Grade 4 - 8', 'Grade 9 - 12', 'Open'] },
+  { name: 'SoccerBot (RC)', type: 'RC', players: '3 Players + 1 Coach', levels: ['Open'] },
+  { name: 'Track Mania (RC)', type: 'RC', players: '1-2 Players', levels: ['Open'] },
+  { name: 'Innovation / Future Makers', type: 'Theme-based', players: '1-3 Participants', levels: ['Grade 4 - 8', 'Grade 9 - 12', 'Open'] },
 ];
 
 // --- Components ---
@@ -447,11 +448,16 @@ const Competitions = () => {
         <div className="grid md:grid-cols-2 gap-8">
           {GAME_EVENTS.map((game, idx) => (
             <div key={idx} className="bg-white rounded-3xl p-8 shadow-sm border border-slate-100">
-              <div className="flex items-center gap-3 mb-5">
-                <div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-blue-100 text-blue-600">
-                  <Gamepad2 size={24} />
+              <div className="flex items-start justify-between gap-3 mb-5">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-blue-100 text-blue-600">
+                    <Gamepad2 size={24} />
+                  </div>
+                  <h4 className="text-2xl font-black text-slate-900">{game.name}</h4>
                 </div>
-                <h4 className="text-2xl font-black text-slate-900">{game.name}</h4>
+                <span className={`px-3 py-1 rounded-full text-xs font-bold ${game.type === 'Autonomous' ? 'bg-orange-100 text-orange-700' : game.type === 'RC' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'}`}>
+                  {game.type}
+                </span>
               </div>
 
               <p className="text-sm font-medium text-slate-600 mb-4">Team Setup: {game.players}</p>
