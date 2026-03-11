@@ -45,13 +45,13 @@ const REGISTRATION_URL = 'https://forms.gle/6W3upEFHpdKqzuJv6';
 const GAME_RULES_URL = '/game-rules-and-details.pdf';
 
 const GAME_EVENTS: GameEvent[] = [
-  { name: 'MakerBall', players: '1 Player', levels: ['Grade 1 - 3', 'Grade 4 - 8'] },
-  { name: 'Line Dash', players: '1 Player', levels: ['Grade 9 - 12', 'Open Category'] },
-  { name: 'Robo Push (RC)', players: '1-2 Players', levels: ['Grade 9 - 12'] },
-  { name: 'Robo Push (Auto)', players: '1-2 Players', levels: ['Open Category'] },
-  { name: 'Track Mania (RC)', players: '1-2 Players', levels: ['Grade 1 - 6', 'Open Category'] },
-  { name: 'SoccerBot', players: '3 Players + 1 Coach', levels: ['Open Category'] },
-  { name: 'Innovation', players: '1-3 Participants', levels: ['Grade 4 - 8', 'Grade 9 - 12', 'Open Category'] },
+  { name: 'Line Tracing (Programmable)', players: '1 Player', levels: ['Grade 1 - 3', 'Grade 4 - 8', 'Grade 9 - 12', 'Open'] },
+  { name: 'Shoot the Ball / MakerBall', players: '1 Player', levels: ['Grade 1 - 3', 'Grade 4 - 8'] },
+  { name: 'Sumobot / Robo Push (Autonomous)', players: '1-2 Players', levels: ['Open'] },
+  { name: 'Sumobot / Robo Push (RC)', players: '1-2 Players', levels: ['Grade 4 - 8', 'Grade 9 - 12', 'Open'] },
+  { name: 'SoccerBot (RC)', players: '3 Players + 1 Coach', levels: ['Open'] },
+  { name: 'Track Mania (RC)', players: '1-2 Players', levels: ['Open'] },
+  { name: 'Innovation / Future Makers', players: '1-3 Participants', levels: ['Grade 4 - 8', 'Grade 9 - 12', 'Open'] },
 ];
 
 // --- Components ---
