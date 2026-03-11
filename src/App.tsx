@@ -60,6 +60,7 @@ const STUDENT_LEARNING_IMAGES = [
   '/student-learning-2.jpg',
   '/student-learning-3.jpg',
   '/student-learning-4.jpg',
+  '/student-learning-5.jpg',
 ];
 
 // --- Components ---
