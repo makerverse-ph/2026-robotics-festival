@@ -55,6 +55,13 @@ const GAME_EVENTS: GameEvent[] = [
   { name: 'Innovation / Future Makers', type: 'Theme-based', players: '1-3 Participants', levels: ['Grade 4 - 8', 'Grade 9 - 12', 'Open'] },
 ];
 
+const STUDENT_LEARNING_IMAGES = [
+  '/student-learning-1.jpg',
+  '/student-learning-2.jpg',
+  '/student-learning-3.jpg',
+  '/student-learning-4.jpg',
+];
+
 // --- Components ---
 
 const BASE = import.meta.env.BASE_URL;
@@ -312,6 +319,24 @@ const Hero = () => {
 };
 
 const About = () => {
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveSlide((prev) => (prev + 1) % STUDENT_LEARNING_IMAGES.length);
+    }, 4000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const goPrev = () => {
+    setActiveSlide((prev) => (prev - 1 + STUDENT_LEARNING_IMAGES.length) % STUDENT_LEARNING_IMAGES.length);
+  };
+
+  const goNext = () => {
+    setActiveSlide((prev) => (prev + 1) % STUDENT_LEARNING_IMAGES.length);
+  };
+
   return (
     <section id="about" className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-6">
@@ -376,13 +401,38 @@ const About = () => {
           </div>
 
           <div className="relative">
-            <div className="aspect-square rounded-[3rem] overflow-hidden shadow-2xl">
-              <img 
-                src="https://images.unsplash.com/photo-1561557944-6e7860d1a7eb?auto=format&fit=crop&q=80&w=800" 
-                alt="Students Learning" 
+            <div className="aspect-square rounded-[3rem] overflow-hidden shadow-2xl relative">
+              <img
+                src={STUDENT_LEARNING_IMAGES[activeSlide]}
+                alt="Students Learning"
                 className="w-full h-full object-cover"
-                referrerPolicy="no-referrer"
               />
+
+              <div className="absolute inset-x-0 bottom-4 flex items-center justify-center gap-2">
+                {STUDENT_LEARNING_IMAGES.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setActiveSlide(idx)}
+                    className={`h-2.5 rounded-full transition-all ${activeSlide === idx ? 'w-6 bg-white' : 'w-2.5 bg-white/60'}`}
+                    aria-label={`Go to slide ${idx + 1}`}
+                  />
+                ))}
+              </div>
+
+              <button
+                onClick={goPrev}
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/40 text-white hover:bg-black/60"
+                aria-label="Previous image"
+              >
+                ←
+              </button>
+              <button
+                onClick={goNext}
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/40 text-white hover:bg-black/60"
+                aria-label="Next image"
+              >
+                →
+              </button>
             </div>
             <div className="absolute -bottom-10 -right-10 bg-[#003366] text-white p-8 rounded-[2rem] shadow-2xl max-w-xs hidden sm:block">
               <p className="text-3xl font-black mb-2">150-200</p>
