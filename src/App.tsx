@@ -44,6 +44,7 @@ const MAKERVERSE_ORANGE = '#FF6321';
 const MAKERVERSE_BLUE = '#0056B3';
 const REGISTRATION_URL = 'https://forms.gle/6W3upEFHpdKqzuJv6';
 const GAME_RULES_URL = '/game-rules-and-details.pdf';
+const FESTIVAL_CALENDAR_URL = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=1st+Dipolog+Robotics+Festival+%26+Competition+2026&dates=20260411T010000Z/20260411T090000Z&details=Not+joining+a+game+category%3F+You%E2%80%99re+still+invited.+Explore+live+demos%2C+robotics+exhibits%2C+drone+and+UAV%2FUGV+showcases%2C+communication+technologies+like+LoRa%2C+product+displays%2C+and+hands-on+tech+experiences+for+all+ages.&location=Zamboanga+del+Norte+Cultural+and+Sports+Center%2C+Dipolog+City';
 
 const GAME_EVENTS: GameEvent[] = [
   { name: 'Line Tracing (Programmable)', type: 'Autonomous', players: '1 Player', levels: ['Grade 1 - 3', 'Grade 4 - 8', 'Grade 9 - 12', 'Open'] },
@@ -544,6 +545,61 @@ const Competitions = () => {
   );
 };
 
+const FestivalExperience = () => {
+  const highlights = [
+    'Live robot and drone demos',
+    'UAV / UGV technology showcases',
+    'Robotics parts and product displays',
+    'Communication tech zone (LoRa, modules, IoT)',
+    'Hands-on exhibits for students, families, and tech enthusiasts',
+  ];
+
+  return (
+    <section id="festival-experience" className="py-24 bg-white">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="rounded-[2.5rem] bg-gradient-to-br from-[#003366] to-[#0a4f99] p-10 md:p-14 text-white relative overflow-hidden">
+          <div className="absolute -top-16 -right-16 w-56 h-56 bg-white/10 blur-3xl rounded-full" />
+          <div className="absolute -bottom-16 -left-16 w-56 h-56 bg-orange-400/20 blur-3xl rounded-full" />
+
+          <div className="relative z-10 grid lg:grid-cols-2 gap-10 items-start">
+            <div>
+              <h2 className="text-sm font-bold text-orange-300 uppercase tracking-[0.2em] mb-4">Festival Experience</h2>
+              <h3 className="text-4xl md:text-5xl font-black mb-6 leading-tight">
+                Beyond the Competition
+              </h3>
+              <p className="text-blue-100 text-lg leading-relaxed max-w-2xl">
+                Not joining a game category? You’re still invited. Explore live demos, robotics exhibits, drone and UAV/UGV showcases, communication technologies like LoRa, product displays, and hands-on tech experiences for all ages.
+              </p>
+            </div>
+
+            <div className="bg-white/10 border border-white/20 rounded-2xl p-6 backdrop-blur-sm">
+              <p className="text-xs uppercase tracking-wider text-blue-100 mb-4 font-bold">What attendees can explore</p>
+              <div className="space-y-3">
+                {highlights.map((item, idx) => (
+                  <div key={idx} className="flex items-start gap-3">
+                    <Check size={18} className="text-orange-300 mt-0.5 flex-shrink-0" />
+                    <p className="text-blue-50">{item}</p>
+                  </div>
+                ))}
+              </div>
+
+              <a
+                href={FESTIVAL_CALENDAR_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 inline-flex items-center gap-2 bg-[#FF6321] text-white px-6 py-3 rounded-xl font-bold hover:bg-[#e55a1e] transition-all"
+              >
+                <Calendar size={18} />
+                Add Festival to Calendar
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const Venue = () => {
   return (
     <section id="venue" className="py-24 bg-white">
@@ -869,6 +925,7 @@ export default function App() {
         <Vision />
         <Promotional />
         <Competitions />
+        <FestivalExperience />
         <Venue />
         <FAQ />
       </main>
