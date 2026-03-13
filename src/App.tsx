@@ -592,6 +592,14 @@ const FestivalExperience = () => {
                 <Calendar size={18} />
                 Add Festival to Calendar
               </a>
+
+              <a
+                href="#share"
+                className="mt-4 inline-flex items-center gap-2 text-blue-100 hover:text-white font-semibold"
+              >
+                <Share2 size={16} />
+                Share this with friends
+              </a>
             </div>
           </div>
         </div>
