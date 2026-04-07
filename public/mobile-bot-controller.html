@@ -5,51 +5,64 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mobile Bot Controller — Makerverse</title>
   <style>
-    body { margin:0; font-family: Inter, Arial, sans-serif; background:#0b1020; color:#eef2ff; }
-    .wrap { max-width: 880px; margin: 0 auto; padding: 32px 18px 56px; }
-    .card { background: rgba(20,26,52,.85); border:1px solid rgba(103,132,255,.35); border-radius:14px; padding:18px; margin-bottom:16px; }
+    :root {
+      --bg:#070b1c;
+      --card:#121a38;
+      --line:rgba(117,145,255,.32);
+      --text:#eef2ff;
+      --muted:#b9c6ff;
+      --primary:#4f46e5;
+      --accent:#ff6321;
+    }
+    *{box-sizing:border-box}
+    body { margin:0; font-family: Inter, Arial, sans-serif; background: radial-gradient(900px 400px at 10% -20%, rgba(79,70,229,.25), transparent 60%), var(--bg); color:var(--text); }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 28px 18px 56px; }
+    .card { background: linear-gradient(180deg, rgba(20,26,58,.95), rgba(12,18,40,.95)); border:1px solid var(--line); border-radius:14px; padding:18px; margin-bottom:16px; box-shadow: 0 12px 28px rgba(0,0,0,.28); }
     h1,h2 { margin: 0 0 10px; }
-    p { color:#c8d2ff; line-height:1.5; }
-    .btn { display:inline-block; padding:10px 14px; border-radius:10px; text-decoration:none; color:#fff; border:1px solid rgba(148,163,184,.35); margin:6px 6px 0 0; }
-    .btn.primary { background:#4f46e5; border-color:#4f46e5; }
+    p { color:var(--muted); line-height:1.55; }
+    .btn { display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:10px; text-decoration:none; color:#fff; border:1px solid rgba(148,163,184,.35); margin:6px 6px 0 0; font-weight:600; }
+    .btn.primary { background:var(--primary); border-color:var(--primary); }
     .btn.ghost { background:rgba(148,163,184,.12); }
     .grid { display:grid; gap:12px; grid-template-columns: 1fr 1fr; }
-    input { width:100%; padding:10px; border-radius:10px; border:1px solid rgba(148,163,184,.35); background:#11162d; color:#fff; }
-    small { color:#9fb0ff; }
-    @media (max-width: 760px){ .grid{ grid-template-columns:1fr; } }
+    .hero-grid { display:grid; gap:12px; grid-template-columns: 1.15fr .85fr; align-items:stretch; }
+    .hero-img { width:100%; height:100%; min-height:240px; object-fit:cover; border-radius:12px; border:1px solid rgba(148,163,184,.25); }
+    .socials .btn { min-width: 170px; justify-content:center; }
+    .pill { display:inline-block; padding:4px 10px; border-radius:999px; background: rgba(255,99,33,.16); border:1px solid rgba(255,99,33,.4); color:#ffd4c0; font-size:12px; font-weight:700; letter-spacing:.3px; }
+    .note { font-size: 13px; color:#9fb0ff; }
+    @media (max-width: 860px){ .grid,.hero-grid{ grid-template-columns:1fr; } }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="card">
-      <h1>Mobile Bot Controller</h1>
-      <p>Free BLE robot control app by Makerverse. Use it for ESP32 and classroom robotics demos.</p>
-      <a class="btn primary" href="https://github.com/makerverse-ph/makerverse-controller/actions">Download APK (latest build)</a>
-      <a class="btn ghost" href="https://facebook.com/makerverse.ph">Follow Makerverse</a>
+    <div class="card hero-grid">
+      <div>
+        <span class="pill">Makerverse Community Tool</span>
+        <h1 style="margin-top:10px;">Mobile Bot Controller</h1>
+        <p><strong style="color:#fff;">Free BLE mobile robot control app by Makerverse. Use it for ESP32 based mobile robots.</strong></p>
+        <p>Control your robot, test movement commands, and use it during workshops, demos, and competitions.</p>
+        <a class="btn primary" href="/android-controller.apk">⬇️ Download APK</a>
+        <a class="btn ghost" href="https://facebook.com/makerverse.ph" target="_blank" rel="noopener noreferrer">📘 Follow Makerverse</a>
+        <div class="note" style="margin-top:10px;">Tip: If your browser blocks direct APK install, allow installs from unknown sources.</div>
+      </div>
+      <div>
+        <img class="hero-img" src="/mascot.png" alt="Makerverse robot assistant" />
+      </div>
     </div>
 
-    <div class="grid">
-      <div class="card">
-        <h2>Get updates (optional)</h2>
-        <p>Receive new robot maps, firmware updates, and workshop invites.</p>
-        <form onsubmit="event.preventDefault(); alert('Thanks! We\'ll add this to Makerverse updates list.');">
-          <label>Email</label>
-          <input type="email" placeholder="you@example.com" required />
-          <div style="margin-top:10px;">
-            <button class="btn primary" type="submit">Notify Me</button>
-          </div>
-        </form>
-        <small>This is optional and only for updates/workshops.</small>
+    <div class="card">
+      <h2>Robot Control in Action</h2>
+      <div class="grid">
+        <img class="hero-img" src="/student-learning-3.jpg" alt="Students using robots" />
+        <img class="hero-img" src="/student-learning-5.jpg" alt="Mobile robot build activity" />
       </div>
+      <p style="margin-top:10px;">Designed for hands-on robotics sessions where learners control and troubleshoot mobile robots in real time.</p>
+    </div>
 
-      <div class="card">
-        <h2>Community links</h2>
-        <a class="btn ghost" href="https://facebook.com/makerverse.ph" target="_blank">Facebook</a>
-        <a class="btn ghost" href="https://www.tiktok.com/@makerverse.ph" target="_blank">TikTok</a>
-        <a class="btn ghost" href="https://t.me/makerverseph" target="_blank">Telegram</a>
-        <a class="btn ghost" href="https://discord.gg/makerverse" target="_blank">Discord</a>
-        <p style="margin-top:14px;">Share this app with friends and classmates to grow the robotics community.</p>
-      </div>
+    <div class="card socials">
+      <h2>Follow Us for more updates</h2>
+      <a class="btn ghost" href="https://facebook.com/makerverse.ph" target="_blank">📘 Facebook /makerverse.ph</a>
+      <a class="btn ghost" href="https://instagram.com/makerverse.ph" target="_blank">📸 Instagram @makerverse.ph</a>
+      <p class="note">Get new robot maps, firmware updates, event invites, and workshop announcements.</p>
     </div>
   </div>
 </body>
