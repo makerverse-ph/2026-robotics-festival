@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mobile Bot Controller — Makerverse</title>
+  <style>
+    body { margin:0; font-family: Inter, Arial, sans-serif; background:#0b1020; color:#eef2ff; }
+    .wrap { max-width: 880px; margin: 0 auto; padding: 32px 18px 56px; }
+    .card { background: rgba(20,26,52,.85); border:1px solid rgba(103,132,255,.35); border-radius:14px; padding:18px; margin-bottom:16px; }
+    h1,h2 { margin: 0 0 10px; }
+    p { color:#c8d2ff; line-height:1.5; }
+    .btn { display:inline-block; padding:10px 14px; border-radius:10px; text-decoration:none; color:#fff; border:1px solid rgba(148,163,184,.35); margin:6px 6px 0 0; }
+    .btn.primary { background:#4f46e5; border-color:#4f46e5; }
+    .btn.ghost { background:rgba(148,163,184,.12); }
+    .grid { display:grid; gap:12px; grid-template-columns: 1fr 1fr; }
+    input { width:100%; padding:10px; border-radius:10px; border:1px solid rgba(148,163,184,.35); background:#11162d; color:#fff; }
+    small { color:#9fb0ff; }
+    @media (max-width: 760px){ .grid{ grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Mobile Bot Controller</h1>
+      <p>Free BLE robot control app by Makerverse. Use it for ESP32 and classroom robotics demos.</p>
+      <a class="btn primary" href="https://github.com/makerverse-ph/makerverse-controller/actions">Download APK (latest build)</a>
+      <a class="btn ghost" href="https://facebook.com/makerverse.ph">Follow Makerverse</a>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Get updates (optional)</h2>
+        <p>Receive new robot maps, firmware updates, and workshop invites.</p>
+        <form onsubmit="event.preventDefault(); alert('Thanks! We\'ll add this to Makerverse updates list.');">
+          <label>Email</label>
+          <input type="email" placeholder="you@example.com" required />
+          <div style="margin-top:10px;">
+            <button class="btn primary" type="submit">Notify Me</button>
+          </div>
+        </form>
+        <small>This is optional and only for updates/workshops.</small>
+      </div>
+
+      <div class="card">
+        <h2>Community links</h2>
+        <a class="btn ghost" href="https://facebook.com/makerverse.ph" target="_blank">Facebook</a>
+        <a class="btn ghost" href="https://www.tiktok.com/@makerverse.ph" target="_blank">TikTok</a>
+        <a class="btn ghost" href="https://t.me/makerverseph" target="_blank">Telegram</a>
+        <a class="btn ghost" href="https://discord.gg/makerverse" target="_blank">Discord</a>
+        <p style="margin-top:14px;">Share this app with friends and classmates to grow the robotics community.</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

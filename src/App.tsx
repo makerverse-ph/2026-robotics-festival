@@ -87,6 +87,7 @@ const Nav = () => {
     { name: 'Vision', href: '#vision' },
     { name: 'Competitions', href: '#competitions' },
     { name: 'Venue', href: '#venue' },
+    { name: 'Controller App', href: '/mobile-bot-controller.html' },
   ];
 
   return (
