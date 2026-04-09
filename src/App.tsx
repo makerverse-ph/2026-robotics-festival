@@ -89,7 +89,7 @@ const Nav = () => {
     { name: 'Vision', href: '#vision' },
     { name: 'Competitions', href: '#competitions' },
     { name: 'Program Flow', href: '#program-flow' },
-    { name: 'SoccerBot Bracket', href: '/soccerbot-bracket' },
+    { name: 'SoccerBot Bracket', href: `${BASE}?page=soccerbot-bracket` },
     { name: 'Venue', href: '#venue' },
   ];
 
@@ -897,7 +897,7 @@ const Footer = () => {
               <li><a href="#about" className="hover:text-white transition-colors">About Us</a></li>
               <li><a href="#competitions" className="hover:text-white transition-colors">Competitions</a></li>
               <li><a href="#venue" className="hover:text-white transition-colors">Venue Details</a></li>
-              <li><a href="/soccerbot-bracket" className="hover:text-white transition-colors">SoccerBot Bracket</a></li>
+              <li><a href={`${BASE}?page=soccerbot-bracket`} className="hover:text-white transition-colors">SoccerBot Bracket</a></li>
               <li><a href="/game-rules-and-details.pdf" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Game Rules</a></li>
               <li><a href="/mobile-bot-controller.html" className="hover:text-white transition-colors">Controller App</a></li>
             </ul>
@@ -1031,7 +1031,16 @@ const Promotional = () => {
 };
 
 export default function App() {
-  const isBracketPage = typeof window !== 'undefined' && window.location.pathname === '/soccerbot-bracket';
+  const isBracketPage = (() => {
+    if (typeof window === 'undefined') return false;
+    const path = window.location.pathname.replace(/\/+$/, '');
+    const params = new URLSearchParams(window.location.search);
+    return (
+      path === '/soccerbot-bracket' ||
+      window.location.hash === '#/soccerbot-bracket' ||
+      params.get('page') === 'soccerbot-bracket'
+    );
+  })();
 
   if (isBracketPage) {
     return <SoccerbotBracketPage />;
