@@ -5,6 +5,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import SoccerbotBracketPage from './SoccerbotBracketPage';
+
 import { 
   Bot, 
   Cpu, 
@@ -87,6 +89,7 @@ const Nav = () => {
     { name: 'Vision', href: '#vision' },
     { name: 'Competitions', href: '#competitions' },
     { name: 'Program Flow', href: '#program-flow' },
+    { name: 'SoccerBot Bracket', href: '/soccerbot-bracket' },
     { name: 'Venue', href: '#venue' },
   ];
 
@@ -894,6 +897,7 @@ const Footer = () => {
               <li><a href="#about" className="hover:text-white transition-colors">About Us</a></li>
               <li><a href="#competitions" className="hover:text-white transition-colors">Competitions</a></li>
               <li><a href="#venue" className="hover:text-white transition-colors">Venue Details</a></li>
+              <li><a href="/soccerbot-bracket" className="hover:text-white transition-colors">SoccerBot Bracket</a></li>
               <li><a href="/game-rules-and-details.pdf" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Game Rules</a></li>
               <li><a href="/mobile-bot-controller.html" className="hover:text-white transition-colors">Controller App</a></li>
             </ul>
@@ -1027,6 +1031,12 @@ const Promotional = () => {
 };
 
 export default function App() {
+  const isBracketPage = typeof window !== 'undefined' && window.location.pathname === '/soccerbot-bracket';
+
+  if (isBracketPage) {
+    return <SoccerbotBracketPage />;
+  }
+
   return (
     <div className="min-h-screen bg-slate-50 font-sans selection:bg-orange-500/30 selection:text-orange-900">
       <Nav />
