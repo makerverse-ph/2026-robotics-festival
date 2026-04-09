@@ -86,6 +86,7 @@ const Nav = () => {
     { name: 'About', href: '#about' },
     { name: 'Vision', href: '#vision' },
     { name: 'Competitions', href: '#competitions' },
+    { name: 'Program Flow', href: '#program-flow' },
     { name: 'Venue', href: '#venue' },
   ];
 
@@ -608,6 +609,107 @@ const FestivalExperience = () => {
   );
 };
 
+
+const ProgramFlow = () => {
+  const scheduleBlocks = [
+    {
+      time: '7:00 - 8:30 AM',
+      title: 'Morning Activities',
+      items: ['Ribbon Cutting', 'Registration of Participants', 'Robot Inspection and Setup'],
+    },
+    {
+      time: '8:30 - 9:00 AM',
+      title: 'Opening Program',
+      items: ['Invocation', 'Philippine National Anthem', 'Welcome Message', 'Orientation of Game Mechanics and Safety Rules'],
+    },
+    {
+      time: '9:00 - 9:45 AM',
+      title: 'Line Dash (Autonomous - 1 Player)',
+      items: ['Grade 1-3', 'Grade 4-8', 'Grade 9-12', 'Open Category'],
+    },
+    {
+      time: '9:00 AM - 3:30 PM',
+      title: 'Innovation Exhibit: Health & Disaster Response',
+      items: ['Grade 4-8', 'Grade 9-12', 'Judging conducted anytime during the day'],
+    },
+    {
+      time: '9:45 - 10:30 AM',
+      title: 'One Minute Makerball (Autonomous - 1 Player)',
+      items: ['Grade 1-3', 'Grade 4-8'],
+    },
+    {
+      time: '10:30 - 11:15 AM',
+      title: 'Robo Push',
+      items: ['Grade 4-8 (RC - 1 Player)', 'Grade 9-12 (RC - 1 Player)', 'Open Category (Autonomous - 1 Player)'],
+    },
+    {
+      time: '11:15 AM - 12:00 NN',
+      title: 'Track Mania (RC - 1 Player)',
+      items: [],
+    },
+    {
+      time: '12:00 - 1:00 PM',
+      title: 'Lunch Break',
+      items: [],
+    },
+    {
+      time: '1:30 - 3:00 PM',
+      title: 'Soccerbot (RC - 3+1 Players)',
+      items: ['Open Category'],
+    },
+    {
+      time: '3:30 - 4:30 PM',
+      title: 'Awarding Ceremony',
+      items: ['Competition Awards', 'Innovation Awards', 'Special Awards', 'Photo Session'],
+    },
+    {
+      time: '4:30 PM',
+      title: 'Closing Program',
+      items: ['Closing Remarks'],
+    },
+  ];
+
+  return (
+    <section id="program-flow" className="py-24 bg-slate-50">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="text-center mb-12">
+          <h2 className="text-sm font-bold text-[#FF6321] uppercase tracking-[0.2em] mb-4">Program Flow</h2>
+          <h3 className="text-4xl md:text-5xl font-black text-slate-900 mb-4">Official Event Schedule</h3>
+          <p className="text-slate-600 max-w-3xl mx-auto">
+            Updated schedule for April 11, 2026 at the Zamboanga del Norte Cultural and Sports Center.
+          </p>
+        </div>
+
+        <div className="grid lg:grid-cols-2 gap-8 items-start">
+          <div className="bg-white rounded-3xl p-5 shadow-sm border border-slate-200">
+            <img
+              src={`${BASE}program-flow-2026.jpg`}
+              alt="Program Flow Schedule - 1st Dipolog Robotics Festival and Competition"
+              className="w-full rounded-2xl border border-slate-200"
+            />
+          </div>
+
+          <div className="space-y-4">
+            {scheduleBlocks.map((block) => (
+              <div key={`${block.time}-${block.title}`} className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+                <p className="text-xs uppercase tracking-wider text-[#0056B3] font-bold mb-2">{block.time}</p>
+                <h4 className="text-lg font-black text-slate-900">{block.title}</h4>
+                {block.items.length > 0 && (
+                  <ul className="mt-3 space-y-1 text-sm text-slate-600 list-disc pl-5">
+                    {block.items.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const Venue = () => {
   return (
     <section id="venue" className="py-24 bg-white">
@@ -935,6 +1037,7 @@ export default function App() {
         <Promotional />
         <Competitions />
         <FestivalExperience />
+        <ProgramFlow />
         <Venue />
         <FAQ />
       </main>
