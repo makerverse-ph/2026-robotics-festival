@@ -39,7 +39,7 @@ export interface BracketComputation {
 
 const intFromScore = (value: string): number | null => {
   if (value === '') return null;
-  if (!/^\d+$/.test(value)) return null;
+  if (!/^-?\d+$/.test(value)) return null;
   return Number(value);
 };
 
