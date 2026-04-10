@@ -6,6 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import SoccerbotBracketPage from './SoccerbotBracketPage';
+import SumobotBracketPage from './SumobotBracketPage';
 
 import { 
   Bot, 
@@ -90,6 +91,7 @@ const Nav = () => {
     { name: 'Competitions', href: '#competitions' },
     { name: 'Program Flow', href: '#program-flow' },
     { name: 'SoccerBot Bracket', href: `${BASE}?page=soccerbot-bracket` },
+    { name: 'SumoBot Bracket', href: `${BASE}?page=sumobot-bracket` },
     { name: 'Venue', href: '#venue' },
   ];
 
@@ -898,6 +900,7 @@ const Footer = () => {
               <li><a href="#competitions" className="hover:text-white transition-colors">Competitions</a></li>
               <li><a href="#venue" className="hover:text-white transition-colors">Venue Details</a></li>
               <li><a href={`${BASE}?page=soccerbot-bracket`} className="hover:text-white transition-colors">SoccerBot Bracket</a></li>
+              <li><a href={`${BASE}?page=sumobot-bracket`} className="hover:text-white transition-colors">SumoBot Bracket</a></li>
               <li><a href="/game-rules-and-details.pdf" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Game Rules</a></li>
               <li><a href="/mobile-bot-controller.html" className="hover:text-white transition-colors">Controller App</a></li>
             </ul>
@@ -1031,19 +1034,28 @@ const Promotional = () => {
 };
 
 export default function App() {
-  const isBracketPage = (() => {
-    if (typeof window === 'undefined') return false;
+  const bracketPage = (() => {
+    if (typeof window === 'undefined') return null;
     const path = window.location.pathname.replace(/\/+$/, '');
+    const hash = window.location.hash;
     const params = new URLSearchParams(window.location.search);
-    return (
-      path === '/soccerbot-bracket' ||
-      window.location.hash === '#/soccerbot-bracket' ||
-      params.get('page') === 'soccerbot-bracket'
-    );
+
+    if (path === '/soccerbot-bracket' || hash === '#/soccerbot-bracket' || params.get('page') === 'soccerbot-bracket') {
+      return 'soccerbot';
+    }
+    if (path === '/sumobot-bracket' || hash === '#/sumobot-bracket' || params.get('page') === 'sumobot-bracket') {
+      return 'sumobot';
+    }
+
+    return null;
   })();
 
-  if (isBracketPage) {
+  if (bracketPage === 'soccerbot') {
     return <SoccerbotBracketPage />;
+  }
+
+  if (bracketPage === 'sumobot') {
+    return <SumobotBracketPage />;
   }
 
   return (
