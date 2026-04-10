@@ -13,8 +13,8 @@ const SHEET_ID = '1UZiABTlvkRM7FvhtjpRqgwzUWZmaLj2d';
 const TEAMS_TAB = 'Soccerbot Teams List';
 const RESULTS_TAB = 'Soccerbot';
 
-const teamsCsvUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(TEAMS_TAB)}`;
-const resultsCsvUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(RESULTS_TAB)}`;
+const teamsCsvBaseUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(TEAMS_TAB)}`;
+const resultsCsvBaseUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(RESULTS_TAB)}`;
 
 interface SheetResultRow {
   matchNo: string;
@@ -148,7 +148,14 @@ export default function SoccerbotBracketPage() {
       setSyncing(true);
       setError('');
 
-      const [teamsRes, resultsRes] = await Promise.all([fetch(teamsCsvUrl), fetch(resultsCsvUrl)]);
+      const stamp = Date.now();
+      const teamsUrl = `${teamsCsvBaseUrl}&ts=${stamp}`;
+      const resultsUrl = `${resultsCsvBaseUrl}&ts=${stamp}`;
+
+      const [teamsRes, resultsRes] = await Promise.all([
+        fetch(teamsUrl, { cache: 'no-store' }),
+        fetch(resultsUrl, { cache: 'no-store' }),
+      ]);
 
       if (!teamsRes.ok || !resultsRes.ok) {
         throw new Error('Unable to fetch sheet data. Please ensure the sheet is public (Anyone with link: Viewer).');
@@ -275,7 +282,7 @@ export default function SoccerbotBracketPage() {
         <section className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
           <h2 className="text-xl font-black text-slate-900 mb-2">Source of Truth: Public Google Sheet</h2>
           <p className="text-sm text-slate-600 mb-2">
-            This page auto-syncs every <strong>10 seconds</strong> from:
+            This page auto-syncs every <strong>10 seconds</strong> from (cache-busted fetch):
           </p>
           <ul className="list-disc pl-5 text-sm text-slate-700 space-y-1">
             <li><strong>{TEAMS_TAB}</strong> (column A for team names)</li>
