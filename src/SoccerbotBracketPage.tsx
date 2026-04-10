@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { ArrowLeft, RefreshCcw, Trophy } from 'lucide-react';
+import { ArrowLeft, RefreshCcw, Trophy, Upload } from 'lucide-react';
 import {
   MatchDef,
   MatchScore,
@@ -8,6 +8,7 @@ import {
   computeBracket,
   nextPowerOfTwo,
 } from './bracketUtils';
+import { pushMatchesToSheet } from './sheetWriter';
 
 const SHEET_ID = '1UZiABTlvkRM7FvhtjpRqgwzUWZmaLj2d';
 const TEAMS_TAB = 'Soccerbot Teams List';
@@ -142,6 +143,8 @@ export default function SoccerbotBracketPage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [syncing, setSyncing] = useState<boolean>(false);
   const [lastSyncedAt, setLastSyncedAt] = useState<Date | null>(null);
+  const [pushing, setPushing] = useState<boolean>(false);
+  const [pushMessage, setPushMessage] = useState<string>('');
 
   const syncFromSheet = async () => {
     try {
@@ -232,6 +235,25 @@ export default function SoccerbotBracketPage() {
     return () => clearInterval(timer);
   }, []);
 
+
+  const pushBracketToSheet = async () => {
+    if (!generated) return;
+
+    try {
+      setPushing(true);
+      setPushMessage('Pushing bracket matches to sheet...');
+      const allMatches = Object.values(generated.matches);
+      const result = await pushMatchesToSheet(RESULTS_TAB, allMatches);
+      setPushMessage(`Pushed ${result.written || 0} matches to ${RESULTS_TAB}.`);
+      await syncFromSheet();
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Failed to push bracket to sheet.';
+      setPushMessage(`Push failed: ${message}`);
+    } finally {
+      setPushing(false);
+    }
+  };
+
   const generated = useMemo(() => {
     if (!defs || seeds.length === 0) return null;
     return computeBracket(defs, seeds, scores);
@@ -270,6 +292,14 @@ export default function SoccerbotBracketPage() {
               <RefreshCcw size={16} className={syncing ? 'animate-spin' : ''} />
               Sync now
             </button>
+            <button
+              onClick={pushBracketToSheet}
+              disabled={!generated || pushing}
+              className="inline-flex items-center gap-2 bg-orange-500/90 px-4 py-2 rounded-lg hover:bg-orange-500 transition disabled:opacity-50"
+            >
+              <Upload size={16} className={pushing ? 'animate-pulse' : ''} />
+              {pushing ? 'Pushing...' : 'Generate + Push Matches'}
+            </button>
             <a href="/" className="inline-flex items-center gap-2 bg-white/10 px-4 py-2 rounded-lg hover:bg-white/20 transition">
               <ArrowLeft size={16} />
               Back to Event Site
@@ -291,6 +321,7 @@ export default function SoccerbotBracketPage() {
           </div>
           {lastSyncedAt && <p className="text-xs text-emerald-700 mt-3 font-semibold">Last synced: {lastSyncedAt.toLocaleTimeString()}</p>}
           {error && <p className="text-sm text-red-600 font-semibold mt-2">{error}</p>}
+          {pushMessage && <p className="text-sm text-blue-700 font-semibold mt-2">{pushMessage}</p>}
         </section>
 
         {loading && <p className="text-sm text-slate-600">Loading bracket from sheet...</p>}
