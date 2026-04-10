@@ -280,18 +280,16 @@ export default function SoccerbotBracketPage() {
 
       <main className="max-w-7xl mx-auto px-6 py-8 space-y-8">
         <section className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-          <h2 className="text-xl font-black text-slate-900 mb-2">Source of Truth: Public Google Sheet</h2>
-          <p className="text-sm text-slate-600 mb-2">
-            This page auto-syncs every <strong>10 seconds</strong> from (cache-busted fetch):
-          </p>
-          <ul className="list-disc pl-5 text-sm text-slate-700 space-y-1">
-            <li><strong>{TEAMS_TAB}</strong> (column A for team names)</li>
-            <li><strong>{RESULTS_TAB}</strong> (A match no, B/F home team+points, G/K away team+points, L winner)</li>
-          </ul>
-          <p className="text-xs text-slate-500 mt-3">
-            Match numbers in sheet column A must match generated bracket IDs (e.g., W1, W2, ... L1 ... GF1).
-          </p>
-          {lastSyncedAt && <p className="text-xs text-emerald-700 mt-2 font-semibold">Last synced: {lastSyncedAt.toLocaleTimeString()}</p>}
+          <h2 className="text-xl font-black text-slate-900 mb-2">Teams List</h2>
+          <p className="text-sm text-slate-600 mb-3">Loaded from <strong>{TEAMS_TAB}</strong> (auto-sync every 10 seconds).</p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-2">
+            {seeds.filter((team) => team !== 'BYE').map((team) => (
+              <div key={team} className="px-3 py-2 rounded-lg border border-slate-200 bg-slate-50 text-sm font-semibold text-slate-800">
+                {team}
+              </div>
+            ))}
+          </div>
+          {lastSyncedAt && <p className="text-xs text-emerald-700 mt-3 font-semibold">Last synced: {lastSyncedAt.toLocaleTimeString()}</p>}
           {error && <p className="text-sm text-red-600 font-semibold mt-2">{error}</p>}
         </section>
 
