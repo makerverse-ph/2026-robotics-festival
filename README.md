@@ -1,20 +1,47 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Makerverse Website
 
-# Run and deploy your AI Studio app
+This Vite/React site now uses the homepage as the main Makerverse landing page and preserves the robotics festival as a dedicated subpage.
 
-This contains everything you need to run your app locally.
+## Routes
 
-View your app in AI Studio: https://ai.studio/apps/769be0a5-eed2-44ad-b582-ef3af979a46b
+- `/` - Makerverse landing page
+- `/robotics-festival-2026/` - 1st Dipolog Robotics Festival & Competition 2026
+- `/events/robotics-festival-2026/` - alternate festival route
+- `/programs/`, `/3d-printing/`, `/events/`, `/contact/` - future-ready routes that open the homepage at the matching section
+- `/soccerbot-bracket`, `/sumobot-bracket`, `?page=soccerbot-bracket`, `?page=sumobot-bracket` - preserved bracket pages
 
-## Run Locally
+## Content Structure
 
-**Prerequisites:**  Node.js
+- `src/App.tsx` handles routing, homepage sections, SEO metadata, and JSON-LD schema.
+- `src/FestivalPage.tsx` contains the preserved robotics festival page.
+- `src/siteData.ts` stores editable Makerverse copy, program tracks, services, FAQs, routes, SEO keywords, event details, and shared asset paths.
+- `public/robots.txt` and `public/sitemap.xml` provide baseline SEO files.
+- `public/404.html` redirects clean GitHub Pages routes back into the React app.
 
+## Development
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+```bash
+npm install
+npm run dev
+```
+
+## Google Analytics
+
+Google Analytics 4 is integrated through `gtag.js` using Measurement ID `G-VVTSN76P4H`. No `.env` file is required.
+
+Tracked events:
+
+- `page_view` for homepage, festival, and bracket routes
+- `generate_lead` for contact, book-visit, email, and message CTAs
+- `cta_click` for program exploration, festival links, and map clicks
+
+## Verification
+
+```bash
+npm run lint
+npm run build
+```
+
+## Deploy
+
+Build with `npm run build` and deploy the generated `dist/` directory to the current static host. The `CNAME`, sitemap, robots file, and clean-route fallback are copied from `public/` during the build.

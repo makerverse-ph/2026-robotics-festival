@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { ArrowLeft, RefreshCcw, Trophy, Upload } from 'lucide-react';
 import {
+  BracketComputation,
   MatchDef,
   MatchScore,
   MatchState,
@@ -96,6 +97,7 @@ const MatchCard = ({
   score,
   winnerFromSheet,
 }: {
+  key?: React.Key;
   match: MatchState;
   score: MatchScore;
   winnerFromSheet?: string;
@@ -242,7 +244,7 @@ export default function SoccerbotBracketPage() {
     try {
       setPushing(true);
       setPushMessage('Pushing bracket matches to sheet...');
-      const allMatches = Object.values(generated.matches);
+      const allMatches = Object.values(generated.matches) as MatchState[];
       const result = await pushMatchesToSheet(RESULTS_TAB, allMatches);
       setPushMessage(`Pushed ${result.written || 0} matches to ${RESULTS_TAB}.`);
       await syncFromSheet();
@@ -254,22 +256,22 @@ export default function SoccerbotBracketPage() {
     }
   };
 
-  const generated = useMemo(() => {
+  const generated = useMemo<BracketComputation | null>(() => {
     if (!defs || seeds.length === 0) return null;
     return computeBracket(defs, seeds, scores);
   }, [defs, seeds, scores]);
 
-  const winnersMatches = useMemo(
-    () => (generated ? Object.values(generated.matches).filter((m) => m.bracket === 'W') : []),
+  const winnersMatches = useMemo<MatchState[]>(
+    () => (generated ? (Object.values(generated.matches) as MatchState[]).filter((m) => m.bracket === 'W') : []),
     [generated],
   );
 
-  const losersMatches = useMemo(
-    () => (generated ? Object.values(generated.matches).filter((m) => m.bracket === 'L') : []),
+  const losersMatches = useMemo<MatchState[]>(
+    () => (generated ? (Object.values(generated.matches) as MatchState[]).filter((m) => m.bracket === 'L') : []),
     [generated],
   );
 
-  const grandFinalMatches = useMemo(() => {
+  const grandFinalMatches = useMemo<MatchState[]>(() => {
     if (!generated) return [];
     const gf1 = generated.matches.GF1 ? [generated.matches.GF1] : [];
     if (generated.showResetFinal && generated.resetFinal) gf1.push(generated.resetFinal);
