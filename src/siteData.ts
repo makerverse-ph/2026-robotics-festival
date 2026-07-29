@@ -24,6 +24,7 @@ export const ROUTES = {
   contact: '/contact/',
   festival: '/robotics-festival-2026/',
   festivalAlt: '/events/robotics-festival-2026/',
+  miraQuestBlog: '/blog/miraquest-usv-dipag-river-deployment',
 };
 
 export const MAKERVERSE = {
@@ -299,6 +300,8 @@ export const FESTIVAL_KEYWORDS = [
 ];
 
 export const SECTION_PATHS: Record<string, string> = {
+  '/updates': 'updates',
+  '/updates/': 'updates',
   '/programs': 'programs',
   '/programs/': 'programs',
   '/3d-printing': 'maker-lab',
@@ -307,8 +310,8 @@ export const SECTION_PATHS: Record<string, string> = {
   '/events/': 'events',
   '/contact': 'contact',
   '/contact/': 'contact',
-  '/blog': 'contact',
-  '/blog/': 'contact',
+  '/blog': 'updates',
+  '/blog/': 'updates',
 };
 
 export const FEATURE_BADGES = [

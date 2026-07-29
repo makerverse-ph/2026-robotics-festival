@@ -3,20 +3,24 @@ import {
   BookOpen,
   Check,
   ChevronRight,
+  Clock3,
   ExternalLink,
   Facebook,
   Mail,
   MapPin,
   Menu,
   MessageCircle,
+  Newspaper,
   Trophy,
   X,
   Zap,
 } from 'lucide-react';
 import FestivalPage from './FestivalPage';
+import MiraQuestArticle from './MiraQuestArticle';
 import SoccerbotBracketPage from './SoccerbotBracketPage';
 import SumobotBracketPage from './SumobotBracketPage';
 import { initGoogleAnalytics, trackMarketingEvent, trackPageView } from './analytics';
+import { MIRAQUEST_ARTICLE } from './miraquestArticleData';
 import {
   ASSETS,
   FEATURE_BADGES,
@@ -36,7 +40,7 @@ import {
   SITE_URL,
 } from './siteData';
 
-type PageKind = 'home' | 'festival' | 'soccerbot' | 'sumobot';
+type PageKind = 'home' | 'festival' | 'miraquest' | 'soccerbot' | 'sumobot';
 
 interface RouteState {
   page: PageKind;
@@ -79,6 +83,10 @@ const getRouteState = (): RouteState => {
     pageParam === 'robotics-festival-2026'
   ) {
     return { page: 'festival', redirectedPath };
+  }
+
+  if (path === normalizePath(ROUTES.miraQuestBlog)) {
+    return { page: 'miraquest', redirectedPath };
   }
 
   return {
@@ -136,6 +144,16 @@ const pageMeta = {
     keywords: FESTIVAL_KEYWORDS,
     canonical: absoluteUrl(ROUTES.festival),
     image: absoluteUrl('/social-card.jpg'),
+  },
+  miraquest: {
+    title: MIRAQUEST_ARTICLE.seo.title,
+    description: MIRAQUEST_ARTICLE.seo.description,
+    keywords: MIRAQUEST_ARTICLE.seo.keywords,
+    canonical: MIRAQUEST_ARTICLE.seo.canonicalUrl,
+    image: absoluteUrl(MIRAQUEST_ARTICLE.coverImage),
+    imageAlt: MIRAQUEST_ARTICLE.coverImageAlt,
+    openGraphTitle: MIRAQUEST_ARTICLE.seo.openGraphTitle,
+    openGraphDescription: MIRAQUEST_ARTICLE.seo.openGraphDescription,
   },
 };
 
@@ -232,25 +250,77 @@ const buildFestivalSchema = () => ({
   ],
 });
 
+const buildMiraQuestSchema = () => ({
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: MIRAQUEST_ARTICLE.title,
+  description: MIRAQUEST_ARTICLE.seo.description,
+  datePublished: `${MIRAQUEST_ARTICLE.publishedDate}T00:00:00+08:00`,
+  dateModified: `${MIRAQUEST_ARTICLE.publishedDate}T00:00:00+08:00`,
+  author: {
+    '@type': 'Organization',
+    name: MAKERVERSE.name,
+    url: SITE_URL,
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: MAKERVERSE.name,
+    url: SITE_URL,
+    logo: {
+      '@type': 'ImageObject',
+      url: absoluteUrl('/makerverse-logo.jpg'),
+    },
+  },
+  image: {
+    '@type': 'ImageObject',
+    url: absoluteUrl(MIRAQUEST_ARTICLE.coverImage),
+    width: MIRAQUEST_ARTICLE.coverImageWidth,
+    height: MIRAQUEST_ARTICLE.coverImageHeight,
+  },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': MIRAQUEST_ARTICLE.seo.canonicalUrl,
+  },
+  articleSection: MIRAQUEST_ARTICLE.category,
+  keywords: MIRAQUEST_ARTICLE.tags,
+});
+
 const usePageMeta = (page: PageKind) => {
   useEffect(() => {
-    if (page !== 'home' && page !== 'festival') return;
+    if (page !== 'home' && page !== 'festival' && page !== 'miraquest') return;
 
     const meta = pageMeta[page];
-    const schema = page === 'home' ? buildHomeSchema() : buildFestivalSchema();
+    const schema =
+      page === 'home' ? buildHomeSchema() : page === 'festival' ? buildFestivalSchema() : buildMiraQuestSchema();
+    const openGraphTitle = 'openGraphTitle' in meta ? meta.openGraphTitle : meta.title;
+    const openGraphDescription = 'openGraphDescription' in meta ? meta.openGraphDescription : meta.description;
+    const imageAlt = 'imageAlt' in meta ? meta.imageAlt : undefined;
 
     document.title = meta.title;
     setMetaTag('name', 'description', meta.description);
     setMetaTag('name', 'keywords', meta.keywords.join(', '));
-    setMetaTag('property', 'og:title', meta.title);
-    setMetaTag('property', 'og:description', meta.description);
+    setMetaTag('property', 'og:title', openGraphTitle);
+    setMetaTag('property', 'og:description', openGraphDescription);
     setMetaTag('property', 'og:image', meta.image);
-    setMetaTag('property', 'og:type', page === 'festival' ? 'event' : 'website');
+    setMetaTag('property', 'og:type', page === 'festival' ? 'event' : page === 'miraquest' ? 'article' : 'website');
     setMetaTag('property', 'og:url', meta.canonical);
+    setMetaTag('property', 'og:site_name', MAKERVERSE.name);
     setMetaTag('name', 'twitter:card', 'summary_large_image');
-    setMetaTag('name', 'twitter:title', meta.title);
-    setMetaTag('name', 'twitter:description', meta.description);
+    setMetaTag('name', 'twitter:title', openGraphTitle);
+    setMetaTag('name', 'twitter:description', openGraphDescription);
     setMetaTag('name', 'twitter:image', meta.image);
+    if (imageAlt) {
+      setMetaTag('property', 'og:image:alt', imageAlt);
+      setMetaTag('property', 'og:image:width', String(MIRAQUEST_ARTICLE.coverImageWidth));
+      setMetaTag('property', 'og:image:height', String(MIRAQUEST_ARTICLE.coverImageHeight));
+      setMetaTag('name', 'twitter:image:alt', imageAlt);
+    }
+    if (page === 'miraquest') {
+      setMetaTag('property', 'article:published_time', `${MIRAQUEST_ARTICLE.publishedDate}T00:00:00+08:00`);
+      setMetaTag('property', 'article:modified_time', `${MIRAQUEST_ARTICLE.publishedDate}T00:00:00+08:00`);
+      setMetaTag('property', 'article:author', MAKERVERSE.name);
+      setMetaTag('property', 'article:section', MIRAQUEST_ARTICLE.category);
+    }
     setCanonical(meta.canonical);
 
     let jsonLd = document.getElementById('page-schema') as HTMLScriptElement | null;
@@ -326,12 +396,13 @@ const SiteHeader = () => {
 
   const links = [
     { label: 'Home', href: '/' },
-    { label: 'Programs', href: '#programs' },
-    { label: 'Maker Lab', href: '#maker-lab' },
-    { label: 'Events', href: '#events' },
+    { label: 'Updates', href: '/#updates' },
+    { label: 'Programs', href: '/#programs' },
+    { label: 'Maker Lab', href: '/#maker-lab' },
+    { label: 'Events', href: '/#events' },
     { label: 'Robotics Festival', href: ROUTES.festival },
-    { label: 'About', href: '#about' },
-    { label: 'Contact', href: '#contact' },
+    { label: 'About', href: '/#about' },
+    { label: 'Contact', href: '/#contact' },
   ];
 
   return (
@@ -348,7 +419,7 @@ const SiteHeader = () => {
           </span>
         </a>
 
-        <nav className="hidden items-center gap-6 lg:flex" aria-label="Primary navigation">
+        <nav className="hidden items-center gap-5 xl:flex" aria-label="Primary navigation">
           {links.map((link) => (
             <a
               key={link.label}
@@ -360,7 +431,7 @@ const SiteHeader = () => {
               {link.label}
             </a>
           ))}
-          <CtaLink href="#contact" analyticsLabel="nav_book_visit" analyticsAction="generate_lead">
+          <CtaLink href="/#contact" analyticsLabel="nav_book_visit" analyticsAction="generate_lead">
             <MessageCircle size={18} />
             Book a Visit
           </CtaLink>
@@ -368,7 +439,7 @@ const SiteHeader = () => {
 
         <button
           type="button"
-          className={`inline-flex h-11 w-11 items-center justify-center rounded-lg border transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FF6321] lg:hidden ${
+          className={`inline-flex h-11 w-11 items-center justify-center rounded-lg border transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FF6321] xl:hidden ${
             scrolled ? 'border-slate-200 text-slate-950' : 'border-white/20 text-white'
           }`}
           onClick={() => setIsOpen((value) => !value)}
@@ -381,7 +452,7 @@ const SiteHeader = () => {
       </div>
 
       {isOpen && (
-        <div id="mobile-menu" className="absolute left-0 top-full w-full border-t border-slate-200 bg-white px-4 py-5 shadow-xl lg:hidden">
+        <div id="mobile-menu" className="absolute left-0 top-full w-full border-t border-slate-200 bg-white px-4 py-5 shadow-xl xl:hidden">
           <nav className="flex flex-col gap-1" aria-label="Mobile navigation">
             {links.map((link) => (
               <a
@@ -394,14 +465,14 @@ const SiteHeader = () => {
               </a>
             ))}
             <a
-              href="#contact"
+              href="/#contact"
               className="mt-3 inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-[#FF6321] px-5 py-3 text-sm font-bold text-white"
               onClick={() => {
                 setIsOpen(false);
                 trackMarketingEvent('generate_lead', {
                   category: 'cta',
                   label: 'mobile_nav_book_visit',
-                  destination: '#contact',
+                  destination: '/#contact',
                 });
               }}
             >
@@ -491,6 +562,97 @@ const CredibilityStrip = () => (
           {item}
         </div>
       ))}
+    </div>
+  </section>
+);
+
+const LatestUpdates = () => (
+  <section id="updates" aria-labelledby="updates-title" className="scroll-mt-20 bg-slate-50 py-20 sm:py-24">
+    <div className="mx-auto max-w-7xl px-4 sm:px-6">
+      <div className="mb-10 flex flex-col gap-5 sm:mb-12 lg:flex-row lg:items-end lg:justify-between">
+        <div className="max-w-3xl">
+          <p className="mb-3 text-xs font-black uppercase tracking-[0.22em] text-[#FF6321]">Latest Updates</p>
+          <h2 id="updates-title" className="text-3xl font-black leading-tight text-slate-950 sm:text-4xl lg:text-5xl">
+            What’s new at Makerverse
+          </h2>
+          <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">
+            Follow new builds, community stories, announcements, and behind-the-scenes moments from our growing maker community.
+          </p>
+        </div>
+        <span className="inline-flex w-fit items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-black uppercase tracking-[0.14em] text-[#0056B3] shadow-sm">
+          <Newspaper size={16} />
+          News &amp; stories
+        </span>
+      </div>
+
+      <article className="grid overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl shadow-slate-200/60 lg:grid-cols-[0.88fr_1.12fr]">
+        <a
+          href={MIRAQUEST_ARTICLE.card.href}
+          aria-label={`Read ${MIRAQUEST_ARTICLE.card.title}`}
+          onClick={() =>
+            trackMarketingEvent('article_open', {
+              category: 'content',
+              label: 'latest_update_cover',
+              destination: MIRAQUEST_ARTICLE.card.href,
+            })
+          }
+          className="relative flex h-[460px] overflow-hidden bg-[#003366] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-[-4px] focus-visible:outline-[#FF6321] sm:h-[500px] lg:h-[520px]"
+        >
+          <img
+            src={MIRAQUEST_ARTICLE.card.image}
+            alt=""
+            aria-hidden="true"
+            loading="lazy"
+            width={MIRAQUEST_ARTICLE.coverImageWidth}
+            height={MIRAQUEST_ARTICLE.coverImageHeight}
+            className="absolute inset-0 h-full w-full scale-110 object-cover opacity-40 blur-xl"
+          />
+          <img
+            src={MIRAQUEST_ARTICLE.card.image}
+            alt={MIRAQUEST_ARTICLE.card.imageAlt}
+            loading="lazy"
+            width={MIRAQUEST_ARTICLE.coverImageWidth}
+            height={MIRAQUEST_ARTICLE.coverImageHeight}
+            className="relative z-10 h-full w-full object-contain"
+          />
+        </a>
+
+        <div className="flex flex-col p-7 sm:p-10 lg:p-12">
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="rounded-full bg-orange-50 px-3 py-1 text-xs font-black uppercase tracking-[0.14em] text-[#FF6321]">
+              {MIRAQUEST_ARTICLE.card.category}
+            </span>
+            <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.12em] text-slate-500">
+              <Clock3 size={14} />
+              {MIRAQUEST_ARTICLE.publishedDateLabel} · {MIRAQUEST_ARTICLE.readingTime} read
+            </span>
+          </div>
+
+          <h3 className="mt-6 text-3xl font-black leading-tight text-slate-950 sm:text-4xl">
+            <a
+              href={MIRAQUEST_ARTICLE.card.href}
+              className="transition-colors hover:text-[#0056B3] focus-visible:rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FF6321]"
+            >
+              {MIRAQUEST_ARTICLE.card.title}
+            </a>
+          </h3>
+          <p className="mt-5 max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
+            {MIRAQUEST_ARTICLE.card.excerpt}
+          </p>
+
+          <div className="mt-8 border-t border-slate-200 pt-7 lg:mt-auto">
+            <CtaLink
+              href={MIRAQUEST_ARTICLE.card.href}
+              variant="dark"
+              analyticsLabel="latest_update_read_miraquest"
+              analyticsAction="article_open"
+            >
+              Read Article
+              <ChevronRight size={18} />
+            </CtaLink>
+          </div>
+        </div>
+      </article>
     </div>
   </section>
 );
@@ -871,11 +1033,12 @@ const FinalCTA = () => (
 const SiteFooter = () => {
   const year = new Date().getFullYear();
   const quickLinks = [
-    ['Programs', '#programs'],
-    ['Maker Lab', '#maker-lab'],
-    ['Events', '#events'],
+    ['Updates', '/#updates'],
+    ['Programs', '/#programs'],
+    ['Maker Lab', '/#maker-lab'],
+    ['Events', '/#events'],
     ['Robotics Festival', ROUTES.festival],
-    ['Contact', '#contact'],
+    ['Contact', '/#contact'],
   ];
 
   return (
@@ -946,6 +1109,7 @@ const HomePage = ({ section }: { section?: string }) => {
       <main>
         <HomeHero />
         <CredibilityStrip />
+        <LatestUpdates />
         <WhatIsMakerverse />
         <Programs />
         <MakerLab />
@@ -988,6 +1152,18 @@ export default function App() {
 
   if (route.page === 'festival') {
     return <FestivalPage />;
+  }
+
+  if (route.page === 'miraquest') {
+    return (
+      <div className="min-h-screen bg-white font-sans selection:bg-orange-500/30 selection:text-orange-900">
+        <SiteHeader />
+        <main>
+          <MiraQuestArticle />
+        </main>
+        <SiteFooter />
+      </div>
+    );
   }
 
   return <HomePage section={route.section} />;
