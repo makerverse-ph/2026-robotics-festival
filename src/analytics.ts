@@ -7,7 +7,7 @@ type GtagArguments =
 
 declare global {
   interface Window {
-    dataLayer?: GtagArguments[];
+    dataLayer?: unknown[];
     gtag?: (...args: GtagArguments) => void;
   }
 }
@@ -20,8 +20,8 @@ export const initGoogleAnalytics = () => {
   if (!isAnalyticsEnabled() || typeof window === 'undefined' || initialized) return;
 
   window.dataLayer = window.dataLayer || [];
-  window.gtag = (...args: GtagArguments) => {
-    window.dataLayer?.push(args);
+  window.gtag = function (..._args: GtagArguments) {
+    window.dataLayer?.push(arguments);
   };
 
   const existingScript = document.getElementById('google-analytics-gtag');
