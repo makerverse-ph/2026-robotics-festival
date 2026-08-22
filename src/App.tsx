@@ -1088,7 +1088,7 @@ const SiteFooter = () => {
         </div>
       </div>
       <div className="mx-auto mt-10 max-w-7xl border-t border-white/10 px-4 pt-6 text-sm text-slate-500 sm:px-6">
-        © {year} Makerverse. All rights reserved...
+        © {year} Makerverse. All rights reserved.
       </div>
     </footer>
   );
