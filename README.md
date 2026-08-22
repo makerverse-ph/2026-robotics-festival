@@ -45,3 +45,6 @@ npm run build
 ## Deploy
 
 Build with `npm run build` and deploy the generated `dist/` directory to the current static host. The `CNAME`, sitemap, robots file, and clean-route fallback are copied from `public/` during the build.
+
+
+## test
