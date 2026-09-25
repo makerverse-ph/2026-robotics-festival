@@ -25,6 +25,7 @@ export const ROUTES = {
   festival: '/robotics-festival-2026/',
   festivalAlt: '/events/robotics-festival-2026/',
   miraQuestBlog: '/blog/miraquest-usv-dipag-river-deployment',
+  walleBlog: '/blog/3d-printed-wall-e-robot-model-dipolog',
 };
 
 export const MAKERVERSE = {

@@ -17,10 +17,11 @@ import {
 } from 'lucide-react';
 import FestivalPage from './FestivalPage';
 import MiraQuestArticle from './MiraQuestArticle';
+import WalleArticle from './WalleArticle';
 import SoccerbotBracketPage from './SoccerbotBracketPage';
 import SumobotBracketPage from './SumobotBracketPage';
 import { initGoogleAnalytics, trackMarketingEvent, trackPageView } from './analytics';
-import { MIRAQUEST_ARTICLE } from './miraquestArticleData';
+import { ARTICLE_PAGES, BLOG_ARTICLES, type ArticlePageKind, type BlogArticleSummary } from './blogArticles';
 import {
   ASSETS,
   FEATURE_BADGES,
@@ -40,7 +41,9 @@ import {
   SITE_URL,
 } from './siteData';
 
-type PageKind = 'home' | 'festival' | 'miraquest' | 'soccerbot' | 'sumobot';
+type PageKind = 'home' | 'festival' | ArticlePageKind | 'soccerbot' | 'sumobot';
+
+const isArticlePage = (page: PageKind): page is ArticlePageKind => page in ARTICLE_PAGES;
 
 interface RouteState {
   page: PageKind;
@@ -85,8 +88,11 @@ const getRouteState = (): RouteState => {
     return { page: 'festival', redirectedPath };
   }
 
-  if (path === normalizePath(ROUTES.miraQuestBlog)) {
-    return { page: 'miraquest', redirectedPath };
+  const articlePage = (Object.keys(ARTICLE_PAGES) as ArticlePageKind[]).find(
+    (key) => normalizePath(ARTICLE_PAGES[key].slug) === path,
+  );
+  if (articlePage) {
+    return { page: articlePage, redirectedPath };
   }
 
   return {
@@ -145,17 +151,18 @@ const pageMeta = {
     canonical: absoluteUrl(ROUTES.festival),
     image: absoluteUrl('/social-card.jpg'),
   },
-  miraquest: {
-    title: MIRAQUEST_ARTICLE.seo.title,
-    description: MIRAQUEST_ARTICLE.seo.description,
-    keywords: MIRAQUEST_ARTICLE.seo.keywords,
-    canonical: MIRAQUEST_ARTICLE.seo.canonicalUrl,
-    image: absoluteUrl(MIRAQUEST_ARTICLE.coverImage),
-    imageAlt: MIRAQUEST_ARTICLE.coverImageAlt,
-    openGraphTitle: MIRAQUEST_ARTICLE.seo.openGraphTitle,
-    openGraphDescription: MIRAQUEST_ARTICLE.seo.openGraphDescription,
-  },
 };
+
+const articleMeta = (article: BlogArticleSummary) => ({
+  title: article.seo.title,
+  description: article.seo.description,
+  keywords: article.seo.keywords,
+  canonical: article.seo.canonicalUrl,
+  image: absoluteUrl(article.coverImage),
+  imageAlt: article.coverImageAlt,
+  openGraphTitle: article.seo.openGraphTitle,
+  openGraphDescription: article.seo.openGraphDescription,
+});
 
 const buildHomeSchema = () => ({
   '@context': 'https://schema.org',
@@ -250,13 +257,13 @@ const buildFestivalSchema = () => ({
   ],
 });
 
-const buildMiraQuestSchema = () => ({
+const buildArticleSchema = (article: BlogArticleSummary) => ({
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
-  headline: MIRAQUEST_ARTICLE.title,
-  description: MIRAQUEST_ARTICLE.seo.description,
-  datePublished: `${MIRAQUEST_ARTICLE.publishedDate}T00:00:00+08:00`,
-  dateModified: `${MIRAQUEST_ARTICLE.publishedDate}T00:00:00+08:00`,
+  headline: article.title,
+  description: article.seo.description,
+  datePublished: `${article.publishedDate}T00:00:00+08:00`,
+  dateModified: `${article.publishedDate}T00:00:00+08:00`,
   author: {
     '@type': 'Organization',
     name: MAKERVERSE.name,
@@ -273,25 +280,29 @@ const buildMiraQuestSchema = () => ({
   },
   image: {
     '@type': 'ImageObject',
-    url: absoluteUrl(MIRAQUEST_ARTICLE.coverImage),
-    width: MIRAQUEST_ARTICLE.coverImageWidth,
-    height: MIRAQUEST_ARTICLE.coverImageHeight,
+    url: absoluteUrl(article.coverImage),
+    width: article.coverImageWidth,
+    height: article.coverImageHeight,
   },
   mainEntityOfPage: {
     '@type': 'WebPage',
-    '@id': MIRAQUEST_ARTICLE.seo.canonicalUrl,
+    '@id': article.seo.canonicalUrl,
   },
-  articleSection: MIRAQUEST_ARTICLE.category,
-  keywords: MIRAQUEST_ARTICLE.tags,
+  articleSection: article.category,
+  keywords: article.tags,
 });
 
 const usePageMeta = (page: PageKind) => {
   useEffect(() => {
-    if (page !== 'home' && page !== 'festival' && page !== 'miraquest') return;
+    if (page !== 'home' && page !== 'festival' && !isArticlePage(page)) return;
 
-    const meta = pageMeta[page];
-    const schema =
-      page === 'home' ? buildHomeSchema() : page === 'festival' ? buildFestivalSchema() : buildMiraQuestSchema();
+    const article = isArticlePage(page) ? ARTICLE_PAGES[page] : undefined;
+    const meta = article ? articleMeta(article) : pageMeta[page as 'home' | 'festival'];
+    const schema = article
+      ? buildArticleSchema(article)
+      : page === 'home'
+        ? buildHomeSchema()
+        : buildFestivalSchema();
     const openGraphTitle = 'openGraphTitle' in meta ? meta.openGraphTitle : meta.title;
     const openGraphDescription = 'openGraphDescription' in meta ? meta.openGraphDescription : meta.description;
     const imageAlt = 'imageAlt' in meta ? meta.imageAlt : undefined;
@@ -302,24 +313,24 @@ const usePageMeta = (page: PageKind) => {
     setMetaTag('property', 'og:title', openGraphTitle);
     setMetaTag('property', 'og:description', openGraphDescription);
     setMetaTag('property', 'og:image', meta.image);
-    setMetaTag('property', 'og:type', page === 'festival' ? 'event' : page === 'miraquest' ? 'article' : 'website');
+    setMetaTag('property', 'og:type', page === 'festival' ? 'event' : article ? 'article' : 'website');
     setMetaTag('property', 'og:url', meta.canonical);
     setMetaTag('property', 'og:site_name', MAKERVERSE.name);
     setMetaTag('name', 'twitter:card', 'summary_large_image');
     setMetaTag('name', 'twitter:title', openGraphTitle);
     setMetaTag('name', 'twitter:description', openGraphDescription);
     setMetaTag('name', 'twitter:image', meta.image);
-    if (imageAlt) {
+    if (imageAlt && article) {
       setMetaTag('property', 'og:image:alt', imageAlt);
-      setMetaTag('property', 'og:image:width', String(MIRAQUEST_ARTICLE.coverImageWidth));
-      setMetaTag('property', 'og:image:height', String(MIRAQUEST_ARTICLE.coverImageHeight));
+      setMetaTag('property', 'og:image:width', String(article.coverImageWidth));
+      setMetaTag('property', 'og:image:height', String(article.coverImageHeight));
       setMetaTag('name', 'twitter:image:alt', imageAlt);
     }
-    if (page === 'miraquest') {
-      setMetaTag('property', 'article:published_time', `${MIRAQUEST_ARTICLE.publishedDate}T00:00:00+08:00`);
-      setMetaTag('property', 'article:modified_time', `${MIRAQUEST_ARTICLE.publishedDate}T00:00:00+08:00`);
+    if (article) {
+      setMetaTag('property', 'article:published_time', `${article.publishedDate}T00:00:00+08:00`);
+      setMetaTag('property', 'article:modified_time', `${article.publishedDate}T00:00:00+08:00`);
       setMetaTag('property', 'article:author', MAKERVERSE.name);
-      setMetaTag('property', 'article:section', MIRAQUEST_ARTICLE.category);
+      setMetaTag('property', 'article:section', article.category);
     }
     setCanonical(meta.canonical);
 
@@ -566,7 +577,9 @@ const CredibilityStrip = () => (
   </section>
 );
 
-const LatestUpdates = () => (
+const LatestUpdates = () => {
+  const [FEATURED_ARTICLE, ...earlierArticles] = BLOG_ARTICLES;
+  return (
   <section id="updates" aria-labelledby="updates-title" className="scroll-mt-20 bg-slate-50 py-20 sm:py-24">
     <div className="mx-auto max-w-7xl px-4 sm:px-6">
       <div className="mb-10 flex flex-col gap-5 sm:mb-12 lg:flex-row lg:items-end lg:justify-between">
@@ -587,32 +600,32 @@ const LatestUpdates = () => (
 
       <article className="grid overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl shadow-slate-200/60 lg:grid-cols-[0.88fr_1.12fr]">
         <a
-          href={MIRAQUEST_ARTICLE.card.href}
-          aria-label={`Read ${MIRAQUEST_ARTICLE.card.title}`}
+          href={FEATURED_ARTICLE.card.href}
+          aria-label={`Read ${FEATURED_ARTICLE.card.title}`}
           onClick={() =>
             trackMarketingEvent('article_open', {
               category: 'content',
               label: 'latest_update_cover',
-              destination: MIRAQUEST_ARTICLE.card.href,
+              destination: FEATURED_ARTICLE.card.href,
             })
           }
           className="relative flex h-[460px] overflow-hidden bg-[#003366] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-[-4px] focus-visible:outline-[#FF6321] sm:h-[500px] lg:h-[520px]"
         >
           <img
-            src={MIRAQUEST_ARTICLE.card.image}
+            src={FEATURED_ARTICLE.card.image}
             alt=""
             aria-hidden="true"
             loading="lazy"
-            width={MIRAQUEST_ARTICLE.coverImageWidth}
-            height={MIRAQUEST_ARTICLE.coverImageHeight}
+            width={FEATURED_ARTICLE.coverImageWidth}
+            height={FEATURED_ARTICLE.coverImageHeight}
             className="absolute inset-0 h-full w-full scale-110 object-cover opacity-40 blur-xl"
           />
           <img
-            src={MIRAQUEST_ARTICLE.card.image}
-            alt={MIRAQUEST_ARTICLE.card.imageAlt}
+            src={FEATURED_ARTICLE.card.image}
+            alt={FEATURED_ARTICLE.card.imageAlt}
             loading="lazy"
-            width={MIRAQUEST_ARTICLE.coverImageWidth}
-            height={MIRAQUEST_ARTICLE.coverImageHeight}
+            width={FEATURED_ARTICLE.coverImageWidth}
+            height={FEATURED_ARTICLE.coverImageHeight}
             className="relative z-10 h-full w-full object-contain"
           />
         </a>
@@ -620,31 +633,31 @@ const LatestUpdates = () => (
         <div className="flex flex-col p-7 sm:p-10 lg:p-12">
           <div className="flex flex-wrap items-center gap-3">
             <span className="rounded-full bg-orange-50 px-3 py-1 text-xs font-black uppercase tracking-[0.14em] text-[#FF6321]">
-              {MIRAQUEST_ARTICLE.card.category}
+              {FEATURED_ARTICLE.card.category}
             </span>
             <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.12em] text-slate-500">
               <Clock3 size={14} />
-              {MIRAQUEST_ARTICLE.publishedDateLabel} · {MIRAQUEST_ARTICLE.readingTime} read
+              {FEATURED_ARTICLE.publishedDateLabel} · {FEATURED_ARTICLE.readingTime} read
             </span>
           </div>
 
           <h3 className="mt-6 text-3xl font-black leading-tight text-slate-950 sm:text-4xl">
             <a
-              href={MIRAQUEST_ARTICLE.card.href}
+              href={FEATURED_ARTICLE.card.href}
               className="transition-colors hover:text-[#0056B3] focus-visible:rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FF6321]"
             >
-              {MIRAQUEST_ARTICLE.card.title}
+              {FEATURED_ARTICLE.card.title}
             </a>
           </h3>
           <p className="mt-5 max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
-            {MIRAQUEST_ARTICLE.card.excerpt}
+            {FEATURED_ARTICLE.card.excerpt}
           </p>
 
           <div className="mt-8 border-t border-slate-200 pt-7 lg:mt-auto">
             <CtaLink
-              href={MIRAQUEST_ARTICLE.card.href}
+              href={FEATURED_ARTICLE.card.href}
               variant="dark"
-              analyticsLabel="latest_update_read_miraquest"
+              analyticsLabel="latest_update_read_featured"
               analyticsAction="article_open"
             >
               Read Article
@@ -653,9 +666,50 @@ const LatestUpdates = () => (
           </div>
         </div>
       </article>
+
+      {earlierArticles.length > 0 && (
+        <div className="mt-10">
+          <p className="mb-4 text-xs font-black uppercase tracking-[0.18em] text-[#0056B3]">Earlier stories</p>
+          <ul className="grid gap-4 md:grid-cols-2">
+            {earlierArticles.map((article) => (
+              <li key={article.slug}>
+                <a
+                  href={article.card.href}
+                  onClick={() =>
+                    trackMarketingEvent('article_open', {
+                      category: 'content',
+                      label: 'earlier_story',
+                      destination: article.card.href,
+                    })
+                  }
+                  className="group flex h-full items-center gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition-colors hover:border-[#0056B3] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FF6321]"
+                >
+                  <img
+                    src={article.card.image}
+                    alt={article.card.imageAlt}
+                    loading="lazy"
+                    width={article.coverImageWidth}
+                    height={article.coverImageHeight}
+                    className="h-20 w-20 flex-none rounded-xl bg-[#003366] object-cover"
+                  />
+                  <span>
+                    <span className="block text-xs font-black uppercase tracking-[0.12em] text-[#FF6321]">
+                      {article.card.category} · {article.publishedDateLabel}
+                    </span>
+                    <span className="mt-1 block text-lg font-black leading-snug text-slate-950 group-hover:text-[#0056B3]">
+                      {article.card.title}
+                    </span>
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   </section>
-);
+  );
+};
 
 const SectionIntro = ({
   eyebrow,
@@ -1154,12 +1208,12 @@ export default function App() {
     return <FestivalPage />;
   }
 
-  if (route.page === 'miraquest') {
+  if (isArticlePage(route.page)) {
     return (
       <div className="min-h-screen bg-white font-sans selection:bg-orange-500/30 selection:text-orange-900">
         <SiteHeader />
         <main>
-          <MiraQuestArticle />
+          {route.page === 'walle' ? <WalleArticle /> : <MiraQuestArticle />}
         </main>
         <SiteFooter />
       </div>
