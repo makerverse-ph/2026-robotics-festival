@@ -26,6 +26,7 @@ export const ROUTES = {
   festivalAlt: '/events/robotics-festival-2026/',
   miraQuestBlog: '/blog/miraquest-usv-dipag-river-deployment',
   walleBlog: '/blog/3d-printed-wall-e-robot-model-dipolog',
+  mariansBlog: '/blog/saint-marys-academy-dipolog-makerverse-trial-class',
 };
 
 export const MAKERVERSE = {

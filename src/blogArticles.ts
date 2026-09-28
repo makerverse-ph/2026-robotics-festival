@@ -1,5 +1,6 @@
 import { MIRAQUEST_ARTICLE } from './miraquestArticleData';
 import { WALLE_ARTICLE } from './walleArticleData';
+import { MARIANS_ARTICLE } from './mariansArticleData';
 
 /** Fields every blog article exposes to routing, SEO and the homepage updates section. */
 export interface BlogArticleSummary {
@@ -35,6 +36,7 @@ export interface BlogArticleSummary {
 export const ARTICLE_PAGES = {
   miraquest: MIRAQUEST_ARTICLE,
   walle: WALLE_ARTICLE,
+  marians: MARIANS_ARTICLE,
 } as const satisfies Record<string, BlogArticleSummary>;
 
 export type ArticlePageKind = keyof typeof ARTICLE_PAGES;
