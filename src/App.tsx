@@ -19,6 +19,7 @@ import FestivalPage from './FestivalPage';
 import MiraQuestArticle from './MiraQuestArticle';
 import WalleArticle from './WalleArticle';
 import MariansArticle from './MariansArticle';
+import HalloweenArticle from './HalloweenArticle';
 import SoccerbotBracketPage from './SoccerbotBracketPage';
 import SumobotBracketPage from './SumobotBracketPage';
 import { initGoogleAnalytics, trackMarketingEvent, trackPageView } from './analytics';
@@ -1214,7 +1215,9 @@ export default function App() {
       <div className="min-h-screen bg-white font-sans selection:bg-orange-500/30 selection:text-orange-900">
         <SiteHeader />
         <main>
-          {route.page === 'marians' ? (
+          {route.page === 'halloween' ? (
+            <HalloweenArticle />
+          ) : route.page === 'marians' ? (
             <MariansArticle />
           ) : route.page === 'walle' ? (
             <WalleArticle />

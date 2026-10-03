@@ -27,6 +27,7 @@ export const ROUTES = {
   miraQuestBlog: '/blog/miraquest-usv-dipag-river-deployment',
   walleBlog: '/blog/3d-printed-wall-e-robot-model-dipolog',
   mariansBlog: '/blog/saint-marys-academy-dipolog-makerverse-trial-class',
+  halloweenBlog: '/blog/halloween-3d-thermoformed-treats-dipolog',
 };
 
 export const MAKERVERSE = {
