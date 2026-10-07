@@ -28,6 +28,7 @@ export const ROUTES = {
   walleBlog: '/blog/3d-printed-wall-e-robot-model-dipolog',
   mariansBlog: '/blog/saint-marys-academy-dipolog-makerverse-trial-class',
   halloweenBlog: '/blog/halloween-3d-thermoformed-treats-dipolog',
+  lootBagsBlog: '/blog/halloween-trick-or-treat-mini-loot-bags-dipolog',
 };
 
 export const MAKERVERSE = {
