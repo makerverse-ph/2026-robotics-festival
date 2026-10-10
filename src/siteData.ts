@@ -29,6 +29,7 @@ export const ROUTES = {
   mariansBlog: '/blog/saint-marys-academy-dipolog-makerverse-trial-class',
   halloweenBlog: '/blog/halloween-3d-thermoformed-treats-dipolog',
   lootBagsBlog: '/blog/halloween-trick-or-treat-mini-loot-bags-dipolog',
+  spiderRobotBlog: '/blog/makerverse-spider-robot-work-in-progress-dipolog',
 };
 
 export const MAKERVERSE = {
