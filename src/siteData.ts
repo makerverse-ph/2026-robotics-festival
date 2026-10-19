@@ -30,6 +30,8 @@ export const ROUTES = {
   halloweenBlog: '/blog/halloween-3d-thermoformed-treats-dipolog',
   lootBagsBlog: '/blog/halloween-trick-or-treat-mini-loot-bags-dipolog',
   spiderRobotBlog: '/blog/makerverse-spider-robot-work-in-progress-dipolog',
+  handFanBlog: '/blog/customized-hand-fan-makerverse-dipolog',
+  blastOffBlog: '/blog/blast-off-program-smart-attendance-rfid-system-dipolog',
 };
 
 export const MAKERVERSE = {

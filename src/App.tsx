@@ -22,6 +22,8 @@ import MariansArticle from './MariansArticle';
 import HalloweenArticle from './HalloweenArticle';
 import LootBagsArticle from './LootBagsArticle';
 import SpiderRobotArticle from './SpiderRobotArticle';
+import HandFanArticle from './HandFanArticle';
+import BlastOffArticle from './BlastOffArticle';
 import SoccerbotBracketPage from './SoccerbotBracketPage';
 import SumobotBracketPage from './SumobotBracketPage';
 import { initGoogleAnalytics, trackMarketingEvent, trackPageView } from './analytics';
@@ -1217,7 +1219,11 @@ export default function App() {
       <div className="min-h-screen bg-white font-sans selection:bg-orange-500/30 selection:text-orange-900">
         <SiteHeader />
         <main>
-          {route.page === 'spider' ? (
+          {route.page === 'blastoff' ? (
+            <BlastOffArticle />
+          ) : route.page === 'handfan' ? (
+            <HandFanArticle />
+          ) : route.page === 'spider' ? (
             <SpiderRobotArticle />
           ) : route.page === 'lootbags' ? (
             <LootBagsArticle />

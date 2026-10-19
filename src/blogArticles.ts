@@ -4,6 +4,8 @@ import { MARIANS_ARTICLE } from './mariansArticleData';
 import { HALLOWEEN_ARTICLE } from './halloweenArticleData';
 import { LOOTBAGS_ARTICLE } from './lootBagsArticleData';
 import { SPIDER_ARTICLE } from './spiderRobotArticleData';
+import { HANDFAN_ARTICLE } from './handFanArticleData';
+import { BLASTOFF_ARTICLE } from './blastOffArticleData';
 
 /** Fields every blog article exposes to routing, SEO and the homepage updates section. */
 export interface BlogArticleSummary {
@@ -43,6 +45,8 @@ export const ARTICLE_PAGES = {
   halloween: HALLOWEEN_ARTICLE,
   lootbags: LOOTBAGS_ARTICLE,
   spider: SPIDER_ARTICLE,
+  handfan: HANDFAN_ARTICLE,
+  blastoff: BLASTOFF_ARTICLE,
 } as const satisfies Record<string, BlogArticleSummary>;
 
 export type ArticlePageKind = keyof typeof ARTICLE_PAGES;
