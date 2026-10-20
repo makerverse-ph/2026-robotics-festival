@@ -32,6 +32,7 @@ export const ROUTES = {
   spiderRobotBlog: '/blog/makerverse-spider-robot-work-in-progress-dipolog',
   handFanBlog: '/blog/customized-hand-fan-makerverse-dipolog',
   blastOffBlog: '/blog/blast-off-program-smart-attendance-rfid-system-dipolog',
+  curiosityBlog: '/blog/no-passport-needed-just-curiosity-makerverse-dipolog',
 };
 
 export const MAKERVERSE = {
