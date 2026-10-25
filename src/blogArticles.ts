@@ -7,6 +7,8 @@ import { SPIDER_ARTICLE } from './spiderRobotArticleData';
 import { HANDFAN_ARTICLE } from './handFanArticleData';
 import { BLASTOFF_ARTICLE } from './blastOffArticleData';
 import { CURIOSITY_ARTICLE } from './curiosityArticleData';
+import { PRODUCTION_DAY_ARTICLE } from './productionDayArticleData';
+import { TOY_LAB_ARTICLE } from './toyLabArticleData';
 
 /** Fields every blog article exposes to routing, SEO and the homepage updates section. */
 export interface BlogArticleSummary {
@@ -49,6 +51,8 @@ export const ARTICLE_PAGES = {
   handfan: HANDFAN_ARTICLE,
   blastoff: BLASTOFF_ARTICLE,
   curiosity: CURIOSITY_ARTICLE,
+  productionday: PRODUCTION_DAY_ARTICLE,
+  toylab: TOY_LAB_ARTICLE,
 } as const satisfies Record<string, BlogArticleSummary>;
 
 export type ArticlePageKind = keyof typeof ARTICLE_PAGES;

@@ -33,6 +33,8 @@ export const ROUTES = {
   handFanBlog: '/blog/customized-hand-fan-makerverse-dipolog',
   blastOffBlog: '/blog/blast-off-program-smart-attendance-rfid-system-dipolog',
   curiosityBlog: '/blog/no-passport-needed-just-curiosity-makerverse-dipolog',
+  productionDayBlog: '/blog/production-day-3d-printing-makerverse-dipolog',
+  toyLabBlog: '/blog/makerverse-toy-lab-3d-printed-toys-pop-up-dipolog',
 };
 
 export const MAKERVERSE = {
