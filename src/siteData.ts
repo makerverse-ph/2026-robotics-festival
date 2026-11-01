@@ -35,6 +35,8 @@ export const ROUTES = {
   curiosityBlog: '/blog/no-passport-needed-just-curiosity-makerverse-dipolog',
   productionDayBlog: '/blog/production-day-3d-printing-makerverse-dipolog',
   toyLabBlog: '/blog/makerverse-toy-lab-3d-printed-toys-pop-up-dipolog',
+  clickersBlog: '/blog/makerverse-toy-lab-3d-printed-clickers-dipolog',
+  peekAPopBlog: '/blog/peek-a-pop-3d-printed-party-favors-gifts-dipolog',
 };
 
 export const MAKERVERSE = {

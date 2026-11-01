@@ -9,6 +9,8 @@ import { BLASTOFF_ARTICLE } from './blastOffArticleData';
 import { CURIOSITY_ARTICLE } from './curiosityArticleData';
 import { PRODUCTION_DAY_ARTICLE } from './productionDayArticleData';
 import { TOY_LAB_ARTICLE } from './toyLabArticleData';
+import { CLICKERS_ARTICLE } from './clickersArticleData';
+import { PEEK_A_POP_ARTICLE } from './peekAPopArticleData';
 
 /** Fields every blog article exposes to routing, SEO and the homepage updates section. */
 export interface BlogArticleSummary {
@@ -53,6 +55,8 @@ export const ARTICLE_PAGES = {
   curiosity: CURIOSITY_ARTICLE,
   productionday: PRODUCTION_DAY_ARTICLE,
   toylab: TOY_LAB_ARTICLE,
+  clickers: CLICKERS_ARTICLE,
+  peekapop: PEEK_A_POP_ARTICLE,
 } as const satisfies Record<string, BlogArticleSummary>;
 
 export type ArticlePageKind = keyof typeof ARTICLE_PAGES;

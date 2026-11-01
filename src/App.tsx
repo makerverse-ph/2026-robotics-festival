@@ -27,6 +27,8 @@ import BlastOffArticle from './BlastOffArticle';
 import CuriosityArticle from './CuriosityArticle';
 import ProductionDayArticle from './ProductionDayArticle';
 import ToyLabArticle from './ToyLabArticle';
+import ClickersArticle from './ClickersArticle';
+import PeekAPopArticle from './PeekAPopArticle';
 import SoccerbotBracketPage from './SoccerbotBracketPage';
 import SumobotBracketPage from './SumobotBracketPage';
 import { initGoogleAnalytics, trackMarketingEvent, trackPageView } from './analytics';
@@ -1222,7 +1224,11 @@ export default function App() {
       <div className="min-h-screen bg-white font-sans selection:bg-orange-500/30 selection:text-orange-900">
         <SiteHeader />
         <main>
-          {route.page === 'toylab' ? (
+          {route.page === 'peekapop' ? (
+            <PeekAPopArticle />
+          ) : route.page === 'clickers' ? (
+            <ClickersArticle />
+          ) : route.page === 'toylab' ? (
             <ToyLabArticle />
           ) : route.page === 'productionday' ? (
             <ProductionDayArticle />
